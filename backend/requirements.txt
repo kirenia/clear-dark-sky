@@ -1,0 +1,31 @@
+# Core
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+pydantic==2.5.3
+pydantic-settings==2.1.0
+
+# Database
+sqlalchemy==2.0.25
+aiosqlite==0.19.0
+
+# HTTP client
+aiohttp==3.9.1
+
+# Data processing
+numpy==1.26.3
+
+# GRIB2 parsing (optional - for full CMC data support)
+# Uncomment if you want to parse raw GRIB2 files
+# pygrib==2.1.4
+# cfgrib==0.9.10.4
+# xarray==2024.1.0
+
+# Astronomy calculations
+ephem==4.1.5
+
+# Image generation (optional - for embed images)
+# pillow==10.2.0
+# matplotlib==3.8.2
+
+# Development
+python-dotenv==1.0.0
