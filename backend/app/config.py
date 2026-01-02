@@ -17,7 +17,8 @@ class Settings(BaseSettings):
     CORS_ORIGINS: List[str] = [
         "http://localhost:3000", 
         "http://localhost:5173",
-        "https://cds-frontend-production.up.railway.app"
+        "https://cds-frontend-production.up.railway.app",
+        "https://cleardarksky.app"
         ]
     
     # CMC Data Sources
