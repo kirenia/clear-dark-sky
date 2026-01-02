@@ -1,0 +1,725 @@
+/* ================================
+   DANKO'S CORNER - Main Layout
+   ================================ */
+
+.danko-page {
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #0a0f1a 0%, #1a1f2e 100%);
+  position: relative;
+}
+
+/* Starfield Background */
+.danko-stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: #fff;
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+.star:nth-child(3n) {
+  width: 3px;
+  height: 3px;
+  opacity: 0.8;
+}
+
+.star:nth-child(5n) {
+  width: 1px;
+  height: 1px;
+  opacity: 0.4;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* ================================
+   Left Navigation
+   ================================ */
+
+.danko-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 240px;
+  height: 100vh;
+  background: rgba(10, 15, 26, 0.98);
+  border-right: 1px solid rgba(100, 255, 218, 0.1);
+  display: flex;
+  flex-direction: column;
+  z-index: 50;
+  backdrop-filter: blur(10px);
+  overflow-y: auto;
+}
+
+.danko-nav-header {
+  padding: 1.5rem 1rem;
+  border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #64ffda;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.nav-icon {
+  font-size: 1.25rem;
+}
+
+.danko-nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 1rem 0;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.danko-nav-list li {
+  margin: 0;
+}
+
+.danko-nav-list button {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: none;
+  border: none;
+  color: #a8b2d1;
+  font-size: 0.9rem;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.danko-nav-list button:hover {
+  background: rgba(100, 255, 218, 0.05);
+  color: #64ffda;
+}
+
+.danko-nav-list button.active {
+  background: rgba(100, 255, 218, 0.1);
+  color: #64ffda;
+  border-left: 3px solid #64ffda;
+}
+
+.nav-item-icon {
+  font-size: 1rem;
+  width: 1.5rem;
+  text-align: center;
+}
+
+.danko-nav-footer {
+  padding: 1rem;
+  border-top: 1px solid rgba(100, 255, 218, 0.1);
+}
+
+.danko-nav-footer a {
+  color: #a8b2d1;
+  font-size: 0.85rem;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.danko-nav-footer a:hover {
+  color: #64ffda;
+}
+
+/* ================================
+   Main Content Area
+   ================================ */
+
+.danko-content {
+  max-width: 960px;
+  width: 100%;
+  padding: 2rem 3rem;
+  margin-left: max(240px, calc(50% - 480px));
+  margin-right: auto;
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+.danko-section {
+  margin-bottom: 4rem;
+  scroll-margin-top: 2rem;
+}
+
+.danko-section h2 {
+  color: #64ffda;
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(100, 255, 218, 0.2);
+}
+
+.section-intro {
+  color: #a8b2d1;
+  font-size: 1.05rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.danko-section p {
+  color: #ccd6f6;
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+.danko-section a {
+  color: #64ffda;
+}
+
+.danko-section a:hover {
+  text-decoration: underline;
+}
+
+/* ================================
+   Memorial Section
+   ================================ */
+
+.memorial-header {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: linear-gradient(135deg, rgba(100, 255, 218, 0.1) 0%, rgba(10, 15, 26, 0.5) 100%);
+  border-radius: 12px;
+  margin-bottom: 2rem;
+}
+
+.memorial-header h1 {
+  color: #fff;
+  font-size: 2.5rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.memorial-header .dates {
+  color: #64ffda;
+  font-size: 1.25rem;
+  margin: 0 0 0.25rem 0;
+}
+
+.memorial-header .subtitle {
+  color: #a8b2d1;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.asteroid-card {
+  background: rgba(100, 255, 218, 0.05);
+  border: 1px solid rgba(100, 255, 218, 0.2);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+
+.asteroid-card h3 {
+  color: #64ffda;
+  margin: 0 0 1rem 0;
+}
+
+.asteroid-link {
+  display: inline-block;
+  margin-top: 0.5rem;
+  color: #64ffda;
+  font-weight: 500;
+}
+
+.awards-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.awards-list li {
+  color: #ccd6f6;
+  padding: 0.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.awards-list li::before {
+  content: '🏆';
+  position: absolute;
+  left: 0;
+  font-size: 0.9rem;
+}
+
+.famous-quote {
+  background: rgba(100, 255, 218, 0.05);
+  border-left: 4px solid #64ffda;
+  padding: 1.5rem;
+  margin: 2rem 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.famous-quote p {
+  color: #ccd6f6;
+  font-style: italic;
+  font-size: 1.1rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.famous-quote cite {
+  color: #64ffda;
+  font-style: normal;
+}
+
+.mine-quote {
+  background: rgba(255, 200, 100, 0.1);
+  border: 1px solid rgba(255, 200, 100, 0.3);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.mine-quote h4 {
+  color: #a8b2d1;
+  margin: 0 0 0.5rem 0;
+  font-size: 0.9rem;
+}
+
+.mine-quote p {
+  color: #ffc864;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.mine-quote .mine-context {
+  color: #a8b2d1;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+/* ================================
+   FAQ Section
+   ================================ */
+
+.faq-item {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(100, 255, 218, 0.1);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.faq-item h3 {
+  color: #fff;
+  font-size: 1.1rem;
+  margin: 0 0 1rem 0;
+}
+
+.faq-item p {
+  margin-bottom: 0.75rem;
+}
+
+.faq-item p:last-child {
+  margin-bottom: 0;
+}
+
+/* ================================
+   Seeing Section
+   ================================ */
+
+.seeing-content .emphasis {
+  color: #64ffda;
+  font-style: italic;
+  font-size: 1.1rem;
+}
+
+.seeing-types {
+  display: grid;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.seeing-type {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(100, 255, 218, 0.15);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+}
+
+.seeing-type h4 {
+  color: #64ffda;
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+}
+
+.seeing-type p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.seeing-type a {
+  display: inline-block;
+  color: #64ffda;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.seeing-type a:hover {
+  text-decoration: underline;
+}
+
+/* ================================
+   Silly Files Section
+   ================================ */
+
+.silly-item {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(100, 255, 218, 0.1);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.silly-item h3 {
+  color: #fff;
+  margin: 0 0 0.75rem 0;
+}
+
+.video-link {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: rgba(100, 255, 218, 0.1);
+  border-radius: 4px;
+  color: #64ffda;
+  font-weight: 500;
+  margin-top: 0.5rem;
+}
+
+.video-link:hover {
+  background: rgba(100, 255, 218, 0.2);
+  text-decoration: none;
+}
+
+.poem-box {
+  background: linear-gradient(135deg, rgba(100, 255, 218, 0.05) 0%, rgba(10, 15, 26, 0.3) 100%);
+}
+
+.poem {
+  color: #ccd6f6;
+  font-family: Georgia, serif;
+  font-size: 1rem;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  margin: 0;
+}
+
+.poem-author {
+  color: #64ffda;
+  text-align: right;
+  margin-top: 1rem;
+  font-style: italic;
+}
+
+/* ================================
+   Sketch Section (Four Observers)
+   ================================ */
+
+.sketch-box {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(100, 255, 218, 0.15);
+  border-radius: 8px;
+  padding: 2rem;
+}
+
+.sketch-note {
+  color: #a8b2d1;
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+}
+
+.sketch-dialogue p {
+  margin-bottom: 1.25rem;
+}
+
+.sketch-dialogue strong {
+  color: #64ffda;
+}
+
+.sketch-link {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(100, 255, 218, 0.1);
+}
+
+/* ================================
+   Expletive Scale Section
+   ================================ */
+
+.warning-text {
+  color: #f0a050 !important;
+}
+
+.expletive-scale {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+}
+
+.scale-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(100, 255, 218, 0.1);
+  border-radius: 4px;
+}
+
+.scale-num {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(100, 255, 218, 0.15);
+  color: #64ffda;
+  font-weight: bold;
+  border-radius: 50%;
+}
+
+.scale-desc {
+  color: #ccd6f6;
+}
+
+.expletive-table {
+  margin: 1.5rem 0;
+  overflow-x: auto;
+}
+
+.expletive-table table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(100, 255, 218, 0.15);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.expletive-table th,
+.expletive-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+}
+
+.expletive-table th {
+  background: rgba(100, 255, 218, 0.1);
+  color: #64ffda;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.expletive-table td {
+  color: #ccd6f6;
+  font-size: 0.95rem;
+}
+
+.expletive-table tr:last-child td {
+  border-bottom: none;
+}
+
+.expletive-table tr:hover {
+  background: rgba(100, 255, 218, 0.03);
+}
+
+.expletive-table .highlight-row {
+  background: rgba(100, 255, 218, 0.08);
+}
+
+.expletive-table .highlight-row td {
+  color: #64ffda;
+}
+
+/* ================================
+   News Archive Section
+   ================================ */
+
+.news-archive {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.news-item {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(100, 255, 218, 0.1);
+  border-radius: 8px;
+  padding: 1.25rem;
+}
+
+.news-item.highlight {
+  border-color: rgba(100, 255, 218, 0.3);
+  background: rgba(100, 255, 218, 0.05);
+}
+
+.news-item time {
+  display: block;
+  color: #64ffda;
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.news-item h4 {
+  color: #fff;
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+}
+
+.news-item p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.news-quote {
+  color: #a8b2d1 !important;
+  font-style: italic;
+  margin-top: 0.75rem !important;
+}
+
+.news-note {
+  color: #a8b2d1;
+  font-size: 0.9rem;
+  font-style: italic;
+  margin-top: 1rem;
+}
+
+/* ================================
+   Footer
+   ================================ */
+
+.danko-footer {
+  text-align: center;
+  padding: 3rem 0;
+  margin-top: 2rem;
+  border-top: 1px solid rgba(100, 255, 218, 0.1);
+}
+
+.danko-footer p:first-child {
+  color: #64ffda;
+  font-size: 1.25rem;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  color: #a8b2d1;
+  font-size: 0.9rem;
+}
+
+.footer-links a {
+  color: #a8b2d1;
+}
+
+.footer-links a:hover {
+  color: #64ffda;
+}
+
+/* ================================
+   Responsive Design
+   ================================ */
+
+@media (max-width: 900px) {
+  .danko-page {
+    flex-direction: column;
+  }
+
+  .danko-nav {
+    position: relative;
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+  }
+
+  .danko-content {
+    margin-left: auto;
+  }
+
+  .danko-nav-list {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0.5rem;
+    gap: 0.25rem;
+  }
+
+  .danko-nav-list button {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .nav-item-icon {
+    display: none;
+  }
+
+  .danko-content {
+    padding: 1.5rem;
+  }
+
+  .memorial-header h1 {
+    font-size: 2rem;
+  }
+
+  .seeing-types {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .danko-nav-header {
+    padding: 1rem;
+    font-size: 1rem;
+  }
+
+  .danko-content {
+    padding: 1rem;
+  }
+
+  .memorial-header {
+    padding: 2rem 1rem;
+  }
+
+  .memorial-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .danko-section h2 {
+    font-size: 1.4rem;
+  }
+
+  .faq-item,
+  .silly-item,
+  .sketch-box {
+    padding: 1rem;
+  }
+
+  .poem {
+    font-size: 0.9rem;
+  }
+}

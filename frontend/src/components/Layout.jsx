@@ -16,6 +16,7 @@ function Layout({ children }) {
           <Link to="/" className="nav__logo">ClearDarkSky</Link>
           <div className="nav__links">
             <Link to="/charts">Charts</Link>
+            <Link to="/docs">How to Read</Link>
             <Link to="/about">About</Link>
           </div>
         </nav>
@@ -28,16 +29,17 @@ function Layout({ children }) {
           <div className="footer__main">
             <div className="footer__attribution">
               <p>Created by <strong>Attilla Danko</strong> (1955–2024)</p>
-              <p>Rebuilt by <a href="https://github.com/kiregongora">Kire</a> to keep his work alive.</p>
+              <p>Rebuilt by <a href="https://github.com/kirenia">Kire</a> to keep his legacy alive.</p>
             </div>
             <div className="footer__credits">
               <p>Forecast data: <a href="https://weather.gc.ca/astro/index_e.html">Environment Canada</a> · Model by Allan Rahill</p>
             </div>
             <div className="footer__links">
               <Link to="/about">About</Link>
+              <Link to="/danko">Danko's Corner</Link>
               <Link to="/credits">Credits</Link>
-              <Link to="/privacy">Privacy</Link>
-              <a href="mailto:contact@cleardarksky.com">Contact</a>
+              <Link to="/legal">Legal</Link>
+              <a href="mailto:hello@cleardarksky.app">Contact</a>
             </div>
           </div>
           <p className="footer__tribute">Clear skies, Attilla. ✨</p>

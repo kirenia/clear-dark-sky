@@ -1,0 +1,290 @@
+.credits {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.credits .breadcrumb {
+  font-size: 0.875rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.credits .breadcrumb a {
+  color: #3182ce;
+  text-decoration: none;
+}
+
+.credits .breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.credits h1 {
+  font-size: 2rem;
+  color: #1a202c;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #3182ce;
+  padding-bottom: 0.5rem;
+}
+
+.credits-section {
+  margin-bottom: 3rem;
+}
+
+.credits h2 {
+  font-size: 1.5rem;
+  color: #1a202c;
+  margin-bottom: 1rem;
+}
+
+.credits h3 {
+  font-size: 1.1rem;
+  color: #2d3748;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.section-intro {
+  color: #4a5568;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+.credits a {
+  color: #3182ce;
+  text-decoration: none;
+}
+
+.credits a:hover {
+  text-decoration: underline;
+}
+
+/* Credit Cards */
+.credit-card {
+  background: #f7fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.credit-card--primary {
+  background: linear-gradient(135deg, #1a1f2e 0%, #2d3748 100%);
+  color: #fff;
+  border: none;
+}
+
+.credit-card--primary h3 {
+  color: #fff;
+}
+
+.credit-card--primary p {
+  color: #e2e8f0;
+}
+
+.credit-card--primary .credit-link {
+  color: #63b3ed;
+}
+
+.credit-card h3 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+}
+
+.credit-card p {
+  color: #4a5568;
+  line-height: 1.6;
+  margin: 0 0 0.5rem 0;
+}
+
+.credit-card p:last-child {
+  margin-bottom: 0;
+}
+
+.credit-fine {
+  font-size: 0.85rem;
+  color: #718096 !important;
+}
+
+/* Sponsor Note */
+.sponsor-note {
+  background: #fffaf0;
+  border-left: 4px solid #ed8936;
+  padding: 1rem 1.5rem;
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 1.5rem;
+}
+
+.sponsor-note p {
+  margin: 0;
+  color: #744210;
+}
+
+/* Sponsors Grid */
+.sponsors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.sponsors-grid--top {
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
+.sponsor-card {
+  display: block;
+  background: #e6fffa;
+  border: 1px solid #81e6d9;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  color: #234e52;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+
+.sponsor-card:hover {
+  background: #b2f5ea;
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+.sponsor-card--top {
+  background: #bee3f8;
+  border-color: #63b3ed;
+  color: #2c5282;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 1rem 1.25rem;
+}
+
+.sponsor-card--top:hover {
+  background: #90cdf4;
+}
+
+/* Individual Sponsors */
+.individuals-intro {
+  color: #718096;
+  font-size: 0.95rem;
+  margin-bottom: 0.75rem;
+}
+
+.individuals-list {
+  background: #f7fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.25rem;
+  line-height: 1.8;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.individual-name {
+  color: #4a5568;
+  font-size: 0.9rem;
+}
+
+/* Help Section */
+.help-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.help-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.help-card h3 {
+  margin-top: 0;
+  font-size: 1rem;
+}
+
+.help-card p {
+  color: #4a5568;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.help-btn {
+  display: inline-block;
+  padding: 0.6rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.15s;
+  background: #edf2f7;
+  color: #2d3748;
+  border: 1px solid #e2e8f0;
+}
+
+.help-btn:hover {
+  background: #e2e8f0;
+  text-decoration: none;
+}
+
+.help-btn--donate {
+  background: #ff5e5b;
+  color: #fff;
+  border-color: #ff5e5b;
+}
+
+.help-btn--donate:hover {
+  background: #e54542;
+}
+
+.help-btn--github {
+  background: #24292e;
+  color: #fff;
+  border-color: #24292e;
+}
+
+.help-btn--github:hover {
+  background: #1a1e22;
+}
+
+/* Rebuild Section */
+.credits-rebuild {
+  background: #f0fff4;
+  border: 1px solid #9ae6b4;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.credits-rebuild h2 {
+  color: #22543d;
+}
+
+.credits-rebuild p {
+  color: #276749;
+  line-height: 1.7;
+  margin-bottom: 0.75rem;
+}
+
+.credits-rebuild p:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 600px) {
+  .credits {
+    padding: 1rem;
+  }
+
+  .credits h1 {
+    font-size: 1.5rem;
+  }
+
+  .sponsors-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .help-grid {
+    grid-template-columns: 1fr;
+  }
+}

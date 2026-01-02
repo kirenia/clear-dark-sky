@@ -78,6 +78,41 @@
   text-align: right;
 }
 
+/* Chart Controls */
+.chart-controls {
+  background: #e8f4f8;
+  border: 1px solid #b8d4e3;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+}
+
+.chart-controls h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.9rem;
+  color: #1a1a2e;
+}
+
+.chart-controls ol {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.chart-controls li {
+  margin-bottom: 0.25rem;
+  color: #444;
+}
+
+.chart-controls li:last-child {
+  margin-bottom: 0;
+}
+
+.chart-controls input[type="checkbox"] {
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+
 /* Forecast Chart */
 .forecast-chart {
   min-width: 800px;

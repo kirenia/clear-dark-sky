@@ -190,6 +190,15 @@ function Forecast() {
         <div className="chart-updated">
           Forecast run: {forecast.forecast_run}
         </div>
+
+        <div className="chart-controls">
+          <h3>Chart Controls</h3>
+          <ol>
+            <li>Hold your mouse over a block to explain color and details.</li>
+            <li>Click on a forecast block to show full forecast map</li>
+            <li>Check box to display color legend: <input type="checkbox" id="showLegend" /></li>
+          </ol>
+        </div>
         
         <div className="forecast-chart">
           {/* Time header */}

@@ -74,12 +74,12 @@ function About() {
           
           <div className="contribute-options">
             <a 
-              href="https://ko-fi.com/kirenia" 
+              href="https://github.com/sponsors/kirenia" 
               target="_blank" 
               rel="noopener noreferrer"
               className="contribute-btn donate-btn"
             >
-              Buy Me a Coffee
+              Sponsor the Project
             </a>
             <a 
               href="https://github.com/kirenia/clear-dark-sky" 

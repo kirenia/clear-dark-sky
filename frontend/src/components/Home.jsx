@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { API_URL } from '../config';
 import './Home.css'
 
@@ -84,6 +85,24 @@ const CA_PROVINCES = [
   { name: 'Prince Edward Island', abbr: 'PE', count: 14 },
   { name: 'Quebec', abbr: 'QC', count: 311 },
   { name: 'Saskatchewan', abbr: 'SK', count: 42 },
+]
+
+const RELATED_SITES = [
+  {
+    name: 'International Dark-Sky Association',
+    url: 'https://www.darksky.org/',
+    description: 'Protecting the night sky'
+  },
+  {
+    name: 'RASC Light Pollution Abatement',
+    url: 'https://www.rasc.ca/lpa',
+    description: 'Canadian dark-sky advocacy'
+  },
+  {
+    name: 'Clear Sky Alarm Clock',
+    url: 'http://clearskyalarmclock.com',
+    description: 'Get alerts when skies clear'
+  },
 ]
 
 function Home() {
@@ -277,7 +296,7 @@ function Home() {
             Good transparency means you can see faint objects. Good seeing means steady 
             air for planetary detail.
           </p>
-          <a href="/docs" className="text-link">Learn how to read a chart →</a>
+          <Link to="/docs" className="text-link">Learn how to read a chart →</Link>
         </section>
 
         <section className="request-section">
@@ -287,7 +306,40 @@ function Home() {
             you can request one for your location. Charts are available for anywhere 
             within our <a href="/coverage">coverage area</a>.
           </p>
-          <a href="/request" className="btn">Request a Chart</a>
+          <a href="mailto:hello@cleardarksky.app?subject=Chart%20Request" className="btn">Request a Chart</a>
+        </section>
+
+        <section className="related-section">
+          <h2 className="section-title">Related Sites</h2>
+          <div className="related-grid">
+            {RELATED_SITES.map(site => (
+              <a 
+                key={site.name} 
+                href={site.url} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="related-card"
+              >
+                <span className="related-name">{site.name}</span>
+                <span className="related-desc">{site.description}</span>
+              </a>
+            ))}
+          </div>
+        </section>
+
+        <section className="asteroid-mention">
+          <a 
+            href="https://ssd.jpl.nasa.gov/tools/sbdb_lookup.html#/?sstr=attilladanko&view=VOP"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="asteroid-link"
+          >
+            <span className="asteroid-icon">🌟</span>
+            <span className="asteroid-text">
+              <strong>Asteroid (161693) Attilladanko</strong>
+              <span>Named in honor of Clear Sky Chart's creator</span>
+            </span>
+          </a>
         </section>
       </main>
     </div>

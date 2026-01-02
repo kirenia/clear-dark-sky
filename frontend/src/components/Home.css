@@ -567,3 +567,98 @@
     padding: 0.4rem 0.75rem;
   }
 }
+
+/* ================================
+   RELATED SITES SECTION
+   ================================ */
+
+.related-section {
+  margin-bottom: 2.5rem;
+}
+
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.related-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1.25rem;
+  background: #f7fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+
+.related-card:hover {
+  background: #edf2f7;
+  border-color: #cbd5e0;
+  transform: translateY(-2px);
+}
+
+.related-name {
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 0.25rem;
+  font-size: 0.95rem;
+}
+
+.related-desc {
+  font-size: 0.85rem;
+  color: #718096;
+}
+
+/* ================================
+   ASTEROID MENTION
+   ================================ */
+
+.asteroid-mention {
+  margin-bottom: 2rem;
+}
+
+.asteroid-mention .asteroid-link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  background: linear-gradient(135deg, #0a192f 0%, #112240 100%);
+  border-radius: 8px;
+  text-decoration: none;
+  transition: transform 0.15s;
+}
+
+.asteroid-mention .asteroid-link:hover {
+  transform: translateY(-2px);
+}
+
+.asteroid-icon {
+  font-size: 1.5rem;
+}
+
+.asteroid-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.asteroid-text strong {
+  color: #64ffda;
+  font-size: 1rem;
+}
+
+.asteroid-text span {
+  color: #a8b2d1;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 600px) {
+  .related-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .asteroid-mention .asteroid-link {
+    padding: 1rem;
+  }
+}
