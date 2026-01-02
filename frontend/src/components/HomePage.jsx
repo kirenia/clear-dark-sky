@@ -90,21 +90,43 @@ function HomePage() {
   const [searchType, setSearchType] = useState('keyword')
   const [lat, setLat] = useState('')
   const [lon, setLon] = useState('')
+  const [geoLoading, setGeoLoading] = useState(false)
+  const [geoError, setGeoError] = useState('')
 
   const handleSearch = (e) => {
     e.preventDefault()
     if (searchType === 'keyword' && searchQuery.trim()) {
-      window.location.href = `/charts/search?q=${encodeURIComponent(searchQuery)}`
+      window.location.href = `/charts?q=${encodeURIComponent(searchQuery)}`
     } else if (searchType === 'location' && lat && lon) {
-      window.location.href = `/charts/nearby?lat=${lat}&lon=${lon}`
+      window.location.href = `/charts?lat=${lat}&lon=${lon}`
     }
+  }
+
+  const getMyLocation = () => {
+    if (!navigator.geolocation) {
+      setGeoError('Geolocation not supported')
+      return
+    }
+    setGeoLoading(true)
+    setGeoError('')
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLat(position.coords.latitude.toFixed(4))
+        setLon(position.coords.longitude.toFixed(4))
+        setGeoLoading(false)
+      },
+      (err) => {
+        setGeoError('Could not get location')
+        setGeoLoading(false)
+      }
+    )
   }
 
   return (
     <div className="home">
       <header className="header">
         <nav className="nav">
-          <a href="/" className="nav__logo">Clear Dark Sky</a>
+          <a href="/" className="nav__logo">ClearDarkSky</a>
           <div className="nav__links">
             <a href="/charts">All Charts</a>
             <a href="/coverage">Coverage</a>
@@ -116,7 +138,7 @@ function HomePage() {
 
       <main className="main">
         <section className="hero">
-          <h1 className="hero__title">Clear Dark Sky</h1>
+          <h1 className="hero__title">ClearDarkSky</h1>
           <p className="hero__tagline">The astronomer's forecast</p>
           <p className="hero__description">
             At a glance, see when the next 96 hours will have clear and dark skies 
@@ -159,29 +181,40 @@ function HomePage() {
               </div>
             ) : (
               <div className="search-coords">
-                <div className="coord-input">
-                  <label htmlFor="lat">Latitude</label>
-                  <input
-                    type="text"
-                    id="lat"
-                    className="search-input"
-                    placeholder="e.g. 43.6532"
-                    value={lat}
-                    onChange={(e) => setLat(e.target.value)}
-                  />
+                <button 
+                  type="button" 
+                  className="geo-btn"
+                  onClick={getMyLocation}
+                  disabled={geoLoading}
+                >
+                  {geoLoading ? 'Getting location...' : '📍 Use My Location'}
+                </button>
+                {geoError && <p className="geo-error">{geoError}</p>}
+                <div className="coord-inputs">
+                  <div className="coord-input">
+                    <label htmlFor="lat">Latitude</label>
+                    <input
+                      type="text"
+                      id="lat"
+                      className="search-input"
+                      placeholder="e.g. 43.6532"
+                      value={lat}
+                      onChange={(e) => setLat(e.target.value)}
+                    />
+                  </div>
+                  <div className="coord-input">
+                    <label htmlFor="lon">Longitude</label>
+                    <input
+                      type="text"
+                      id="lon"
+                      className="search-input"
+                      placeholder="e.g. -79.3832"
+                      value={lon}
+                      onChange={(e) => setLon(e.target.value)}
+                    />
+                  </div>
                 </div>
-                <div className="coord-input">
-                  <label htmlFor="lon">Longitude</label>
-                  <input
-                    type="text"
-                    id="lon"
-                    className="search-input"
-                    placeholder="e.g. -79.3832"
-                    value={lon}
-                    onChange={(e) => setLon(e.target.value)}
-                  />
-                </div>
-                <button type="submit" className="search-btn">Find Nearby</button>
+                <button type="submit" className="search-btn" disabled={!lat || !lon}>Find Nearby</button>
               </div>
             )}
           </form>
@@ -251,7 +284,7 @@ function HomePage() {
             developed by Allan Rahill.
           </p>
           <p>
-            Look for columns of blue blocks — that's when skies will be clear and dark. 
+            Look for columns of blue blocks, that's when skies will be clear and dark. 
             Good transparency means you can see faint objects. Good seeing means steady 
             air for planetary detail.
           </p>

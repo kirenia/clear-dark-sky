@@ -22,12 +22,18 @@ class LocationDB(Base):
     """Location database model"""
     __tablename__ = "locations"
     
-    id = Column(String, primary_key=True, index=True)  # slug
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    key = Column(String, unique=True, index=True, nullable=False)  # ClearDarkSky key e.g. "CtsldBH"
     name = Column(String, nullable=False)
     latitude = Column(Float, nullable=False)
     longitude = Column(Float, nullable=False)
-    elevation = Column(Float, nullable=True)
-    timezone_offset = Column(Integer, default=-7)
+    country = Column(String, nullable=False)  # "Bahamas", "Canada", "USA", etc.
+    region = Column(String, nullable=True)  # State/province/island
+    category = Column(String, nullable=True)  # "observatory", "dark-sky", "state-park", etc.
+    description = Column(Text, nullable=True)
+    timezone = Column(String, default="America/New_York")
+    elevation = Column(Float, nullable=True)  # meters
+    is_active = Column(Integer, default=1)  # SQLite doesn't have boolean
     created_at = Column(DateTime, default=datetime.utcnow)
     metadata_json = Column(Text, nullable=True)  # For additional info
 
@@ -37,7 +43,7 @@ class ForecastCacheDB(Base):
     __tablename__ = "forecast_cache"
     
     id = Column(Integer, primary_key=True, autoincrement=True)
-    location_id = Column(String, index=True, nullable=False)
+    location_key = Column(String, index=True, nullable=False)
     model_run = Column(String, nullable=False)  # e.g., "2024-01-15T12:00:00Z"
     fetched_at = Column(DateTime, default=datetime.utcnow)
     expires_at = Column(DateTime, nullable=False)
@@ -74,34 +80,3 @@ def get_db():
 
 # Initialize on import
 init_db()
-
-
-# Seed default locations
-def seed_default_locations():
-    """Add default locations if they don't exist"""
-    db = SessionLocal()
-    try:
-        # Check if Idaho Falls exists
-        existing = db.query(LocationDB).filter(LocationDB.id == "idaho-falls").first()
-        if not existing:
-            idaho_falls = LocationDB(
-                id="idaho-falls",
-                name="Idaho Falls",
-                latitude=43.4917,
-                longitude=-112.0339,
-                elevation=1432,  # meters
-                timezone_offset=-7,
-                metadata_json=json.dumps({
-                    "state": "Idaho",
-                    "country": "US",
-                    "bortle_class": 5
-                })
-            )
-            db.add(idaho_falls)
-            db.commit()
-            print("Added Idaho Falls as default location")
-    finally:
-        db.close()
-
-
-seed_default_locations()

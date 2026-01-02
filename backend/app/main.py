@@ -45,9 +45,9 @@ async def startup_event():
 async def root():
     return """
     <html>
-        <head><title>Clear Dark Sky API</title></head>
+        <head><title>ClearDarkSky API</title></head>
         <body>
-            <h1>Clear Dark Sky API</h1>
+            <h1>ClearDarkSky API</h1>
             <p>Astronomy weather forecasts using CMC data from Allan Rahill</p>
             <p><a href="/docs">API Documentation</a></p>
         </body>

@@ -13,22 +13,39 @@ class LocationBase(BaseModel):
     name: str
     latitude: float = Field(..., ge=-90, le=90)
     longitude: float = Field(..., ge=-180, le=180)
+    country: str
+    region: Optional[str] = None
+    category: Optional[str] = None
+    description: Optional[str] = None
+    timezone: str = "America/New_York"
     elevation: Optional[float] = None  # meters
-    timezone_offset: int = -7  # hours from UTC
-    
+
 
 class LocationCreate(LocationBase):
     """For creating new locations"""
-    slug: Optional[str] = None  # URL-friendly identifier
+    key: str  # ClearDarkSky key e.g. "CtsldBH"
 
 
 class Location(LocationBase):
-    """Full location model with ID"""
-    id: str  # slug-based ID
+    """Full location model with key"""
+    id: int
+    key: str
+    is_active: bool = True
     created_at: datetime
     
     class Config:
         from_attributes = True
+
+
+class LocationSummary(BaseModel):
+    """Lightweight location for lists"""
+    key: str
+    name: str
+    country: str
+    region: Optional[str] = None
+    category: Optional[str] = None
+    latitude: float
+    longitude: float
 
 
 # Forecast value enums matching CMC categories
@@ -104,7 +121,7 @@ class DayForecast(BaseModel):
 
 class ForecastResponse(BaseModel):
     """Full forecast response for a location"""
-    location: Location
+    location: Optional[LocationSummary] = None  
     generated_at: datetime
     forecast_run: Optional[str] = None  # e.g., "2024-01-15T12:00:00Z"
     forecast_hours: int = 84

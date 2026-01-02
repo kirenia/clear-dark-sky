@@ -23,7 +23,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.5rem;
-  max-width: 1100px;
+  max-width: 960px;
   margin: 0 auto;
   width: 100%;
 }
@@ -56,7 +56,7 @@
 
 .main {
   flex: 1;
-  max-width: 1100px;
+  max-width: 960px;
   margin: 0 auto;
   padding: 2rem 1.5rem;
   width: 100%;
@@ -169,10 +169,41 @@
 }
 
 .search-coords {
-  display: grid;
-  grid-template-columns: 1fr 1fr auto;
+  display: flex;
+  flex-direction: column;
   gap: 0.75rem;
-  align-items: end;
+}
+
+.geo-btn {
+  padding: 0.6rem 1rem;
+  font-size: 0.95rem;
+  background: #f7fafc;
+  color: #2d3748;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.geo-btn:hover {
+  background: #edf2f7;
+}
+
+.geo-btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.geo-error {
+  color: #c53030;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.coord-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
 }
 
 .coord-input label {
@@ -197,6 +228,11 @@
 
 .search-btn:hover {
   background: #2c5282;
+}
+
+.search-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .quick-links {

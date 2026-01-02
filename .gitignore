@@ -28,3 +28,10 @@ Thumbs.db
 # Logs
 *.log
 npm-debug.log*
+
+# Data files
+backend/data/astronomy/
+backend/data/rdps/
+backend/cache/
+*.grib2
+*.db
