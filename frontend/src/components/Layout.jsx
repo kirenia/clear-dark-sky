@@ -16,7 +16,8 @@ function Layout({ children }) {
           <Link to="/" className="nav__logo">ClearDarkSky</Link>
           <div className="nav__links">
             <Link to="/charts">Charts</Link>
-            <Link to="/docs">How to Read</Link>
+            <Link to="/docs">Docs</Link>
+            <Link to="/calc">Calc</Link>
             <Link to="/about">About</Link>
           </div>
         </nav>

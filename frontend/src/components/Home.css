@@ -23,7 +23,7 @@
 }
 
 .legacy-banner p {
-  max-width: 960px;
+  max-width: 1000px;
   margin: 0 auto;
 }
 
@@ -68,7 +68,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.5rem;
-  max-width: 960px;
+  max-width: 1000px;
   margin: 0 auto;
   width: 100%;
 }
@@ -101,7 +101,7 @@
 
 .main {
   flex: 1;
-  max-width: 960px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 2rem 1.5rem;
   width: 100%;
@@ -445,7 +445,7 @@
 }
 
 .footer__content {
-  max-width: 960px;
+  max-width: 1000px;
   margin: 0 auto;
   display: flex;
   flex-wrap: wrap;

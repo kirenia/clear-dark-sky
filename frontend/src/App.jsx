@@ -4,6 +4,7 @@ import Home from './components/Home'
 import Docs from './components/Docs'
 import Forecast from './components/Forecast'
 import Charts from './components/Charts'
+import Calc from './components/Calc'
 import About from './components/About'
 import Legal from './components/Legal'
 import Credits from './components/Credits'
@@ -22,6 +23,7 @@ function App() {
               <Route path="/charts" element={<Charts />} />
               <Route path="/about" element={<About />} />
               <Route path="/docs" element={<Docs />} />
+              <Route path="/calc" element={<Calc />} />
               <Route path="/legal" element={<Legal />} />
               <Route path="/credits" element={<Credits />} />
             </Routes>

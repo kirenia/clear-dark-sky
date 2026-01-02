@@ -148,7 +148,7 @@
    ================================ */
 
 .danko-content {
-  max-width: 960px;
+  max-width: 1000px;
   width: 100%;
   padding: 2rem 3rem;
   margin-left: max(240px, calc(50% - 480px));
