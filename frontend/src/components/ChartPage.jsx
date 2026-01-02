@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { API_URL } from '../config';
 import './HomePage.css';
 import './ChartPage.css';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 // Color scales
 const COLORS = {

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+import { API_URL } from '../config';
 import './HomePage.css';
 import './AllChartsPage.css';
 
