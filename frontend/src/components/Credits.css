@@ -2,16 +2,19 @@
   max-width: 1000px;
   margin: 0 auto;
   padding: 2rem 1.5rem;
+  background: var(--color-bg);
+  color: var(--color-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .credits .breadcrumb {
   font-size: 0.875rem;
-  color: #666;
+  color: var(--color-text-muted);
   margin-bottom: 1.5rem;
 }
 
 .credits .breadcrumb a {
-  color: #3182ce;
+  color: var(--color-primary);
   text-decoration: none;
 }
 
@@ -21,9 +24,9 @@
 
 .credits h1 {
   font-size: 2rem;
-  color: #1a202c;
+  color: var(--color-text);
   margin-bottom: 2rem;
-  border-bottom: 2px solid #3182ce;
+  border-bottom: 2px solid var(--color-primary);
   padding-bottom: 0.5rem;
 }
 
@@ -33,25 +36,25 @@
 
 .credits h2 {
   font-size: 1.5rem;
-  color: #1a202c;
+  color: var(--color-text);
   margin-bottom: 1rem;
 }
 
 .credits h3 {
   font-size: 1.1rem;
-  color: #2d3748;
+  color: var(--color-text);
   margin-top: 1.5rem;
   margin-bottom: 0.75rem;
 }
 
 .section-intro {
-  color: #4a5568;
+  color: var(--color-text-light);
   line-height: 1.7;
   margin-bottom: 1.5rem;
 }
 
 .credits a {
-  color: #3182ce;
+  color: var(--color-primary);
   text-decoration: none;
 }
 
@@ -61,8 +64,8 @@
 
 /* Credit Cards */
 .credit-card {
-  background: #f7fafc;
-  border: 1px solid #e2e8f0;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   padding: 1.5rem;
   margin-bottom: 1rem;
@@ -92,7 +95,7 @@
 }
 
 .credit-card p {
-  color: #4a5568;
+  color: var(--color-text-light);
   line-height: 1.6;
   margin: 0 0 0.5rem 0;
 }
@@ -103,13 +106,13 @@
 
 .credit-fine {
   font-size: 0.85rem;
-  color: #718096 !important;
+  color: var(--color-text-muted) !important;
 }
 
 /* Sponsor Note */
 .sponsor-note {
-  background: #fffaf0;
-  border-left: 4px solid #ed8936;
+  background: var(--color-warning-bg);
+  border-left: 4px solid var(--color-warning);
   padding: 1rem 1.5rem;
   border-radius: 0 8px 8px 0;
   margin-bottom: 1.5rem;
@@ -117,7 +120,7 @@
 
 .sponsor-note p {
   margin: 0;
-  color: #744210;
+  color: var(--color-warning-text);
 }
 
 /* Sponsors Grid */
@@ -134,45 +137,45 @@
 
 .sponsor-card {
   display: block;
-  background: #e6fffa;
-  border: 1px solid #81e6d9;
+  background: var(--color-success-bg);
+  border: 1px solid var(--color-success-border);
   border-radius: 6px;
   padding: 0.75rem 1rem;
   font-size: 0.9rem;
-  color: #234e52;
+  color: var(--color-success-text);
   text-decoration: none;
   transition: all 0.15s;
 }
 
 .sponsor-card:hover {
-  background: #b2f5ea;
+  background: var(--color-success-hover);
   text-decoration: none;
   transform: translateY(-1px);
 }
 
 .sponsor-card--top {
-  background: #bee3f8;
-  border-color: #63b3ed;
-  color: #2c5282;
+  background: var(--color-info-bg);
+  border-color: var(--color-info-border);
+  color: var(--color-info-text);
   font-weight: 600;
   font-size: 1rem;
   padding: 1rem 1.25rem;
 }
 
 .sponsor-card--top:hover {
-  background: #90cdf4;
+  background: var(--color-info-hover);
 }
 
 /* Individual Sponsors */
 .individuals-intro {
-  color: #718096;
+  color: var(--color-text-muted);
   font-size: 0.95rem;
   margin-bottom: 0.75rem;
 }
 
 .individuals-list {
-  background: #f7fafc;
-  border: 1px solid #e2e8f0;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   padding: 1.25rem;
   line-height: 1.8;
@@ -181,7 +184,7 @@
 }
 
 .individual-name {
-  color: #4a5568;
+  color: var(--color-text-light);
   font-size: 0.9rem;
 }
 
@@ -193,8 +196,8 @@
 }
 
 .help-card {
-  background: #fff;
-  border: 1px solid #e2e8f0;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   padding: 1.5rem;
 }
@@ -205,7 +208,7 @@
 }
 
 .help-card p {
-  color: #4a5568;
+  color: var(--color-text-light);
   font-size: 0.95rem;
   line-height: 1.6;
   margin-bottom: 1rem;
@@ -219,13 +222,13 @@
   border-radius: 6px;
   text-decoration: none;
   transition: all 0.15s;
-  background: #edf2f7;
-  color: #2d3748;
-  border: 1px solid #e2e8f0;
+  background: var(--color-bg-elevated);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
 }
 
 .help-btn:hover {
-  background: #e2e8f0;
+  background: var(--color-bg-alt);
   text-decoration: none;
 }
 
@@ -251,18 +254,18 @@
 
 /* Rebuild Section */
 .credits-rebuild {
-  background: #f0fff4;
-  border: 1px solid #9ae6b4;
+  background: var(--color-success-bg);
+  border: 1px solid var(--color-success-border);
   border-radius: 8px;
   padding: 1.5rem;
 }
 
 .credits-rebuild h2 {
-  color: #22543d;
+  color: var(--color-success-text);
 }
 
 .credits-rebuild p {
-  color: #276749;
+  color: var(--color-success-text);
   line-height: 1.7;
   margin-bottom: 0.75rem;
 }

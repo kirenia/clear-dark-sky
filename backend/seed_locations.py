@@ -26,7 +26,7 @@ def seed_locations():
     
     # Load data
     data = load_locations_json()
-    locations = data["locations"]
+    locations = data if isinstance(data, list) else data["locations"]
     
     db = SessionLocal()
     try:
@@ -34,13 +34,16 @@ def seed_locations():
         updated = 0
         
         for loc in locations:
-            # Check if exists
+            
+            if not loc.get("latitude") or not loc.get("longitude"):
+                print(f"Skipping {loc.get('name', 'unknown')} - missing coords")
+                continue
+                
             existing = db.query(LocationDB).filter(
-                LocationDB.key == loc["key"]
+                LocationDB.key == loc["chart_key"]
             ).first()
             
             if existing:
-                # Update
                 existing.name = loc["name"]
                 existing.latitude = loc["latitude"]
                 existing.longitude = loc["longitude"]
@@ -51,9 +54,8 @@ def seed_locations():
                 existing.timezone = loc.get("timezone", "America/New_York")
                 updated += 1
             else:
-                # Insert
                 db_loc = LocationDB(
-                    key=loc["key"],
+                    key=loc["chart_key"],
                     name=loc["name"],
                     latitude=loc["latitude"],
                     longitude=loc["longitude"],

@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom';
+import { useTheme } from '../context/ThemeContext';
 import './Home.css';
 
 function Layout({ children }) {
+  const { theme, toggleTheme } = useTheme();
+
   return (
     <div className="layout">
       <div className="legacy-banner">
@@ -19,6 +22,14 @@ function Layout({ children }) {
             <Link to="/docs">Docs</Link>
             <Link to="/calc">Calc</Link>
             <Link to="/about">About</Link>
+            <button 
+              onClick={toggleTheme} 
+              className="theme-toggle"
+              aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+              title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+            >
+              {theme === 'light' ? '🌙' : '☀️'}
+            </button>
           </div>
         </nav>
       </header>

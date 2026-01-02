@@ -3,6 +3,9 @@
   margin: 0 auto;
   padding: 1rem;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .forecast--loading,
@@ -12,7 +15,7 @@
 }
 
 .forecast--error h1 {
-  color: #c00;
+  color: var(--color-error);
 }
 
 /* Header */
@@ -22,12 +25,12 @@
 
 .breadcrumb {
   font-size: 0.875rem;
-  color: #666;
+  color: var(--color-text-muted);
   margin-bottom: 0.5rem;
 }
 
 .breadcrumb a {
-  color: #0066cc;
+  color: var(--color-primary);
   text-decoration: none;
 }
 
@@ -38,17 +41,17 @@
 .chart-title {
   margin: 0 0 0.5rem 0;
   font-size: 1.75rem;
-  color: #1a1a2e;
+  color: var(--color-text);
 }
 
 .chart-subtitle {
   font-weight: normal;
-  color: #666;
+  color: var(--color-text-muted);
   font-size: 1.25rem;
 }
 
 .chart-description {
-  color: #555;
+  color: var(--color-text-light);
   margin: 0.5rem 0;
   font-style: italic;
 }
@@ -57,14 +60,14 @@
   display: flex;
   gap: 1.5rem;
   font-size: 0.875rem;
-  color: #666;
+  color: var(--color-text-muted);
   flex-wrap: wrap;
 }
 
 /* Chart Container */
 .chart-container {
-  background: #f8f9fa;
-  border: 1px solid #ddd;
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   padding: 1rem;
   margin-bottom: 1.5rem;
@@ -73,15 +76,15 @@
 
 .chart-updated {
   font-size: 0.75rem;
-  color: #888;
+  color: var(--color-text-light);
   margin-bottom: 0.5rem;
   text-align: right;
 }
 
 /* Chart Controls */
 .chart-controls {
-  background: #e8f4f8;
-  border: 1px solid #b8d4e3;
+  background: var(--color-info-bg);
+  border: 1px solid var(--color-info-border);
   border-radius: 6px;
   padding: 0.75rem 1rem;
   margin-bottom: 1rem;
@@ -91,7 +94,7 @@
 .chart-controls h3 {
   margin: 0 0 0.5rem 0;
   font-size: 0.9rem;
-  color: #1a1a2e;
+  color: var(--color-text);
 }
 
 .chart-controls ol {
@@ -101,7 +104,7 @@
 
 .chart-controls li {
   margin-bottom: 0.25rem;
-  color: #444;
+  color: var(--color-text-light);
 }
 
 .chart-controls li:last-child {
@@ -121,7 +124,7 @@
 .chart-row {
   display: flex;
   align-items: stretch;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--color-border-light);
 }
 
 .chart-row:last-child {
@@ -129,12 +132,12 @@
 }
 
 .chart-row--header {
-  border-bottom: 2px solid #ccc;
+  border-bottom: 2px solid var(--color-border);
 }
 
 .chart-row--dates {
-  background: #e8e8e8;
-  border-bottom: 1px solid #ccc;
+  background: var(--color-bg-elevated);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .chart-label {
@@ -143,11 +146,11 @@
   padding: 0.25rem 0.5rem;
   font-size: 0.75rem;
   font-weight: 600;
-  color: #333;
+  color: var(--color-text);
   display: flex;
   align-items: center;
-  background: #f0f0f0;
-  border-right: 1px solid #ddd;
+  background: var(--color-bg-alt);
+  border-right: 1px solid var(--color-border);
 }
 
 .chart-cells {
@@ -174,17 +177,17 @@
   height: auto;
   padding: 2px 0;
   font-size: 0.625rem;
-  color: #666;
-  background: #f8f8f8;
+  color: var(--color-text-muted);
+  background: var(--color-bg-alt);
 }
 
 .chart-cell--new-day {
-  border-left: 2px solid #999;
+  border-left: 2px solid var(--color-border);
 }
 
 .time-top {
   font-size: 0.5rem;
-  color: #999;
+  color: var(--color-text-light);
   line-height: 1;
 }
 
@@ -199,9 +202,9 @@
   justify-content: center;
   font-size: 0.7rem;
   font-weight: 600;
-  color: #444;
+  color: var(--color-text-light);
   padding: 0.25rem 0;
-  border-right: 2px solid #999;
+  border-right: 2px solid var(--color-border);
 }
 
 .chart-date-span:last-child {
@@ -210,8 +213,8 @@
 
 /* Legend */
 .chart-legend {
-  background: #fff;
-  border: 1px solid #ddd;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   padding: 1rem;
   margin-bottom: 1.5rem;
@@ -220,7 +223,7 @@
 .chart-legend h3 {
   margin: 0 0 1rem 0;
   font-size: 1rem;
-  color: #333;
+  color: var(--color-text);
 }
 
 .legend-grid {
@@ -236,7 +239,7 @@
 .legend-row strong {
   display: block;
   margin-bottom: 0.25rem;
-  color: #333;
+  color: var(--color-text);
 }
 
 .legend-scale {
@@ -254,13 +257,13 @@
 .legend-color {
   width: 14px;
   height: 14px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-border);
   border-radius: 2px;
 }
 
 .legend-label {
   font-size: 0.625rem;
-  color: #666;
+  color: var(--color-text-muted);
 }
 
 .legend-link {
@@ -269,7 +272,7 @@
 }
 
 .legend-link a {
-  color: #0066cc;
+  color: var(--color-primary);
   text-decoration: none;
 }
 
@@ -285,7 +288,7 @@
 .chart-links h3 {
   margin: 0 0 0.75rem 0;
   font-size: 1rem;
-  color: #333;
+  color: var(--color-text);
 }
 
 .links-grid {
@@ -296,29 +299,29 @@
 
 .links-grid a {
   padding: 0.5rem 1rem;
-  background: #f0f0f0;
-  border: 1px solid #ddd;
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-border);
   border-radius: 4px;
-  color: #0066cc;
+  color: var(--color-primary);
   text-decoration: none;
   font-size: 0.875rem;
 }
 
 .links-grid a:hover {
-  background: #e8e8e8;
-  border-color: #ccc;
+  background: var(--color-bg-elevated);
+  border-color: var(--color-border);
 }
 
 /* Footer */
 .chart-footer {
-  border-top: 1px solid #ddd;
+  border-top: 1px solid var(--color-border);
   padding-top: 1rem;
   font-size: 0.875rem;
-  color: #666;
+  color: var(--color-text-muted);
 }
 
 .chart-footer a {
-  color: #0066cc;
+  color: var(--color-primary);
   text-decoration: none;
 }
 
