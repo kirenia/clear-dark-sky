@@ -14,7 +14,7 @@ function AllChartsPage() {
   useEffect(() => {
     async function fetchLocations() {
       try {
-        const res = await fetch(`/api/locations/?limit=10000`);
+        const res = await fetch(`${API_URL}/api/locations/?limit=10000`);
         if (!res.ok) throw new Error('Failed to fetch locations');
         const data = await res.json();
         setLocations(data);
