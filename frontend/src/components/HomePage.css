@@ -10,6 +10,51 @@
 }
 
 /* ================================
+   LEGACY BANNER
+   ================================ */
+
+.legacy-banner {
+  background: #2c5282;
+  color: #e0e0e0;
+  padding: 0.75rem 1.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.legacy-banner p {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.legacy-banner strong {
+  color: #fff;
+}
+
+.legacy-banner a {
+  color: #4a9eff;
+  text-decoration: none;
+  margin-left: 1rem;
+  white-space: nowrap;
+}
+
+.legacy-banner a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  .legacy-banner {
+    font-size: 0.85rem;
+    padding: 0.75rem 1rem;
+  }
+  
+  .legacy-banner a {
+    display: block;
+    margin: 0.5rem 0 0 0;
+  }
+}
+
+/* ================================
    HEADER & NAVIGATION
    ================================ */
 
@@ -400,8 +445,27 @@
 }
 
 .footer__content {
-  max-width: 1100px;
+  max-width: 960px;
   margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.footer__main {
+  flex: 1;
+  min-width: 280px;
+}
+
+.footer__tribute {
+  font-size: 0.95rem;
+  font-style: italic;
+  color: #fff;
+  text-align: right;
+  margin: 0;
+  padding-left: 2rem;
+  white-space: nowrap;
 }
 
 .footer__attribution {

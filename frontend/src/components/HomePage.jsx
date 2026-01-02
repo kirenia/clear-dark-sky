@@ -124,13 +124,18 @@ function HomePage() {
 
   return (
     <div className="home">
+      <div className="legacy-banner">
+        <p>
+          <strong>A community effort to continue Attilla Danko's legacy.</strong> The original Clear Sky Chart creator passed away in November 2024. 
+          This open-source rebuild preserves his work for future astronomers.
+          <a href="https://github.com/kirenia/clear-dark-sky" target="_blank" rel="noopener noreferrer">Contribute on GitHub</a>
+        </p>
+      </div>
       <header className="header">
         <nav className="nav">
           <a href="/" className="nav__logo">ClearDarkSky</a>
           <div className="nav__links">
             <a href="/charts">All Charts</a>
-            <a href="/coverage">Coverage</a>
-            <a href="/request">Request Chart</a>
             <a href="/about">About</a>
           </div>
         </nav>
@@ -284,7 +289,7 @@ function HomePage() {
             developed by Allan Rahill.
           </p>
           <p>
-            Look for columns of blue blocks, that's when skies will be clear and dark. 
+            Look for columns of blue blocks — that's when skies will be clear and dark. 
             Good transparency means you can see faint objects. Good seeing means steady 
             air for planetary detail.
           </p>
@@ -304,28 +309,32 @@ function HomePage() {
 
       <footer className="footer">
         <div className="footer__content">
-          <div className="footer__attribution">
-            <p>
-              Created by <strong>Attilla Danko</strong> (1955–2024)
-            </p>
-            <p>
-              Rebuilt by <a href="https://github.com/kiregongora">Kire</a> to keep his work alive.
-            </p>
+          <div className="footer__main">
+            <div className="footer__attribution">
+              <p>
+                Created by <strong>Attilla Danko</strong> (1955–2024)
+              </p>
+              <p>
+                Rebuilt by <a href="https://github.com/kiregongora">Kire</a> to keep his work alive.
+              </p>
+            </div>
+            
+            <div className="footer__credits">
+              <p>
+                Forecast data: <a href="https://weather.gc.ca/astro/index_e.html">Environment Canada</a> · 
+                Model by Allan Rahill
+              </p>
+            </div>
+            
+            <div className="footer__links">
+              <a href="/about">About</a>
+              <a href="/credits">Credits</a>
+              <a href="/privacy">Privacy</a>
+              <a href="mailto:contact@cleardarksky.com">Contact</a>
+            </div>
           </div>
           
-          <div className="footer__credits">
-            <p>
-              Forecast data: <a href="https://weather.gc.ca/astro/index_e.html">Environment Canada</a> · 
-              Model by Allan Rahill
-            </p>
-          </div>
-          
-          <div className="footer__links">
-            <a href="/about">About</a>
-            <a href="/credits">Credits</a>
-            <a href="/privacy">Privacy</a>
-            <a href="mailto:contact@cleardarksky.com">Contact</a>
-          </div>
+          <p className="footer__tribute">Clear skies, Attilla. ✨</p>
         </div>
       </footer>
     </div>
