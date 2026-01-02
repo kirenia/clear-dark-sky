@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { API_URL } from '../config';
 import './HomePage.css';
 import './AboutPage.css';
 
