@@ -14,7 +14,11 @@ class Settings(BaseSettings):
     DEBUG: bool = True
     
     # CORS
-    CORS_ORIGINS: List[str] = ["http://localhost:3000", "http://localhost:5173"]
+    CORS_ORIGINS: List[str] = [
+        "http://localhost:3000", 
+        "http://localhost:5173",
+        "https://cds-frontend-production.up.railway.app"
+        ]
     
     # CMC Data Sources
     CMC_ASTRONOMY_BASE_URL: str = "https://dd.alpha.meteo.gc.ca/model_gem_regional/astronomy/grib2"
