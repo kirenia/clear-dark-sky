@@ -8,33 +8,45 @@ Attilla created the original cleardarksky.com in 2001 and maintained it until hi
 
 - **Frontend**: React + Vite
 - **Backend**: Python FastAPI
-- **Database**: SQLite
 - **Data**: CMC astronomy forecasts (same source as original)
 - **Deployment**: Railway
 
 ## Project Structure
 
 ```
-clear-dark-sky/
+cleardarksky/
 ├── backend/
 │   ├── app/
 │   │   ├── main.py
+│   │   ├── config.py
 │   │   ├── database.py
 │   │   ├── models.py
+│   │   ├── routers/
+│   │   │   ├── forecast.py
+│   │   │   ├── locations.py
+│   │   │   └── embed.py
 │   │   └── services/
-│   │       ├── cmc_fetcher.py      # GRIB2 data fetcher
-│   │       └── forecast_builder.py  # Forecast processor
-│   ├── scrape_locations.py          # Location scraper
-│   ├── manage_locations.py          # CLI tool
+│   │       ├── cmc_fetcher.py
+│   │       ├── forecast_builder.py
+│   │       ├── astro_calculator.py
+│   │       └── scheduler.py
+│   ├── data/
+│   │   └── locations.json
 │   └── requirements.txt
 ├── frontend/
 │   └── src/
 │       ├── App.jsx
 │       └── components/
-│           ├── HomePage.jsx
-│           ├── ChartPage.jsx
-│           ├── AllCharts.jsx
-│           └── AboutPage.jsx
+│           ├── Home.jsx
+│           ├── Forecast.jsx
+│           ├── Charts.jsx
+│           ├── About.jsx
+│           ├── Docs.jsx
+│           ├── Credits.jsx
+│           ├── Legal.jsx
+│           ├── Danko.jsx
+│           └── Layout.jsx
+├── docker-compose.yml
 └── README.md
 ```
 
@@ -46,7 +58,7 @@ cd backend
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-python3 -m uvicorn app.main:app --reload --port 8000
+python -m uvicorn app.main:app --reload --port 8000
 ```
 
 **Frontend:**
@@ -56,37 +68,27 @@ npm install
 npm run dev
 ```
 
-## Scraping Locations
-
-Populate the database with all 6,000+ chart locations:
-
-```bash
-cd backend
-pip install requests beautifulsoup4
-python scrape_locations.py --details --output data/locations.json
-```
-
 ## API Endpoints
 
 - `GET /api/locations/` - List locations
-- `GET /api/locations/nearby?lat=X&lon=Y` - Find nearby
+- `GET /api/locations/nearby?lat=X&lon=Y` - Find nearby locations
 - `GET /api/forecast/{key}` - Get forecast for location
-- `POST /api/locations/` - Add location
+- `GET /api/embed/{key}` - Embeddable chart image
 
 ## Data Source
 
 CMC astronomy forecasts from Environment Canada:
 - `https://dd.weather.gc.ca/model_gem_regional/astronomy/grib2/{HH}/`
 - Updates 4x daily (00, 06, 12, 18 UTC)
-- Variables: seeing, transparency
+- Variables: cloud cover, seeing, transparency
 
 ## Contributing
 
-- **Code**: [github.com/kirenia/clear-dark-sky](https://github.com/kirenia/clear-dark-sky)
-- **Donate**: [ko-fi.com/kirenia](https://ko-fi.com/kirenia)
+- **Code**: [github.com/kirenia/cleardarksky](https://github.com/kirenia/cleardarksky)
+- **Sponsor**: [github.com/sponsors/kirenia](https://github.com/sponsors/kirenia)
 
 ## Credits
 
-- **Attilla Danko** (1959–2024) — Original Clear Sky Charts
-- **Allan Rahill** — CMC astronomy forecast data
+- **Attilla Danko** (1955–2024) — Original Clear Sky Charts creator
+- **Allan Rahill** — CMC astronomy forecast model
 - **Environment Canada** — Weather data infrastructure
