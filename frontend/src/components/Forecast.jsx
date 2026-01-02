@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { API_URL } from '../config';
-import './HomePage.css';
-import './ChartPage.css';
+import './Home.css';
+import './Forecast.css';
 
 // Color scales
 const COLORS = {
@@ -108,7 +108,7 @@ function formatHour(hour) {
   return { top: top || '', bottom };
 }
 
-function ChartPage() {
+function Forecast() {
   const { key } = useParams();
   const [location, setLocation] = useState(null);
   const [forecast, setForecast] = useState(null);
@@ -138,12 +138,12 @@ function ChartPage() {
   }, [key]);
 
   if (loading) {
-    return <div className="chart-page chart-page--loading">Loading forecast...</div>;
+    return <div className="forecast forecast--loading">Loading forecast...</div>;
   }
 
   if (error) {
     return (
-      <div className="chart-page chart-page--error">
+      <div className="forecast forecast--error">
         <h1>Chart Not Found</h1>
         <p>{error}</p>
         <Link to="/">← Back to Home</Link>
@@ -166,24 +166,7 @@ function ChartPage() {
   ];
 
   return (
-    <div className="chart-page">
-      <div className="legacy-banner">
-        <p>
-          <strong>A community effort to continue Attilla Danko's legacy.</strong> The original Clear Sky Chart creator passed away in November 2024. 
-          This open-source rebuild preserves his work for future astronomers.
-          <a href="https://github.com/kirenia/clear-dark-sky" target="_blank" rel="noopener noreferrer">Contribute on GitHub</a>
-        </p>
-      </div>
-      <header className="header">
-        <nav className="nav">
-          <Link to="/" className="nav__logo">ClearDarkSky</Link>
-          <div className="nav__links">
-            <Link to="/charts">All Charts</Link>
-            <Link to="/about">About</Link>
-          </div>
-        </nav>
-      </header>
-
+    <div className="forecast">
       <div className="chart-header">
         <div className="breadcrumb">
           <Link to="/">Home</Link> &gt; {location.name}
@@ -281,7 +264,7 @@ function ChartPage() {
           ))}
         </div>
         <p className="legend-link">
-          <Link to="/about/reading-charts">Full guide to reading charts →</Link>
+          <Link to="/docs">Full guide to reading charts →</Link>
         </p>
       </div>
 
@@ -299,39 +282,8 @@ function ChartPage() {
           </a>
         </div>
       </div>
-
-      <footer className="footer">
-        <div className="footer__content">
-          <div className="footer__main">
-            <div className="footer__attribution">
-              <p>
-                Created by <strong>Attilla Danko</strong> (1955–2024)
-              </p>
-              <p>
-                Rebuilt by <a href="https://github.com/kiregongora">Kire</a> to keep his work alive.
-              </p>
-            </div>
-            
-            <div className="footer__credits">
-              <p>
-                Forecast data: <a href="https://weather.gc.ca/astro/index_e.html">Environment Canada</a> · 
-                Model by Allan Rahill
-              </p>
-            </div>
-            
-            <div className="footer__links">
-              <Link to="/about">About</Link>
-              <Link to="/credits">Credits</Link>
-              <Link to="/privacy">Privacy</Link>
-              <a href="mailto:contact@cleardarksky.com">Contact</a>
-            </div>
-          </div>
-          
-          <p className="footer__tribute">Clear skies, Attilla. ✨</p>
-        </div>
-      </footer>
     </div>
   );
 }
 
-export default ChartPage;
+export default Forecast;

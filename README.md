@@ -33,7 +33,7 @@ clear-dark-sky/
 │       └── components/
 │           ├── HomePage.jsx
 │           ├── ChartPage.jsx
-│           ├── AllChartsPage.jsx
+│           ├── AllCharts.jsx
 │           └── AboutPage.jsx
 └── README.md
 ```

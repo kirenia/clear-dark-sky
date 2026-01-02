@@ -1,25 +1,25 @@
-.reading-charts {
+.documentation {
   max-width: 960px;
   margin: 0 auto;
   padding: 2rem 1rem;
 }
 
-.reading-charts .breadcrumb {
+.documentation .breadcrumb {
   font-size: 0.875rem;
   color: var(--text-muted);
   margin-bottom: 1.5rem;
 }
 
-.reading-charts .breadcrumb a {
+.documentation .breadcrumb a {
   color: var(--primary);
   text-decoration: none;
 }
 
-.reading-charts .breadcrumb a:hover {
+.documentation .breadcrumb a:hover {
   text-decoration: underline;
 }
 
-.reading-charts h1 {
+.documentation h1 {
   color: var(--text);
   font-size: 2rem;
   margin-bottom: 1.5rem;
@@ -27,7 +27,7 @@
   padding-bottom: 0.5rem;
 }
 
-.reading-charts h2 {
+.documentation h2 {
   color: var(--text);
   font-size: 1.4rem;
   margin-top: 2.5rem;
@@ -36,18 +36,18 @@
   border-bottom: 1px solid var(--border);
 }
 
-.reading-charts section {
+.documentation section {
   margin-bottom: 2rem;
 }
 
-.reading-charts .intro {
+.documentation .intro {
   background: var(--bg-alt);
   padding: 1.5rem;
   border-radius: 8px;
   border-left: 4px solid var(--primary);
 }
 
-.reading-charts .summary-tip {
+.documentation .summary-tip {
   background: #e8f4e8;
   padding: 1rem;
   border-radius: 4px;
@@ -55,23 +55,23 @@
   margin-bottom: 0;
 }
 
-.reading-charts p {
+.documentation p {
   line-height: 1.7;
   margin-bottom: 1rem;
   color: var(--text);
 }
 
-.reading-charts ul {
+.documentation ul {
   margin: 1rem 0;
   padding-left: 1.5rem;
 }
 
-.reading-charts li {
+.documentation li {
   line-height: 1.6;
   margin-bottom: 0.5rem;
 }
 
-.reading-charts .color-scale {
+.documentation .color-scale {
   display: flex;
   flex-wrap: wrap;
   gap: 2px;
@@ -81,7 +81,7 @@
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
-.reading-charts .scale-item {
+.documentation .scale-item {
   flex: 1;
   min-width: 60px;
   padding: 0.5rem 0.25rem;
@@ -91,70 +91,70 @@
   border: 1px solid rgba(0,0,0,0.1);
 }
 
-.reading-charts .darkness-scale .scale-item,
-.reading-charts .humidity-scale .scale-item,
-.reading-charts .temp-scale .scale-item {
+.documentation .darkness-scale .scale-item,
+.documentation .humidity-scale .scale-item,
+.documentation .temp-scale .scale-item {
   min-width: 70px;
 }
 
-.reading-charts .accuracy-note {
+.documentation .accuracy-note {
   background: #f0f4f8;
   padding: 0.75rem 1rem;
   border-radius: 4px;
   font-size: 0.9rem;
 }
 
-.reading-charts .note {
+.documentation .note {
   font-size: 0.9rem;
   color: var(--text-muted);
   font-style: italic;
 }
 
-.reading-charts .warning {
+.documentation .warning {
   background: #fff3e0;
   padding: 0.75rem 1rem;
   border-radius: 4px;
   border-left: 3px solid #ff9800;
 }
 
-.reading-charts .credits {
+.documentation .credits {
   background: var(--bg-alt);
   padding: 1.5rem;
   border-radius: 8px;
   margin-top: 3rem;
 }
 
-.reading-charts .credits h2 {
+.documentation .credits h2 {
   margin-top: 0;
 }
 
-.reading-charts .credits a {
+.documentation .credits a {
   color: var(--primary);
   text-decoration: none;
 }
 
-.reading-charts .credits a:hover {
+.documentation .credits a:hover {
   text-decoration: underline;
 }
 
 @media (max-width: 600px) {
-  .reading-charts {
+  .documentation {
     padding: 1rem;
   }
 
-  .reading-charts h1 {
+  .documentation h1 {
     font-size: 1.5rem;
   }
 
-  .reading-charts h2 {
+  .documentation h2 {
     font-size: 1.2rem;
   }
 
-  .reading-charts .color-scale {
+  .documentation .color-scale {
     flex-wrap: wrap;
   }
 
-  .reading-charts .scale-item {
+  .documentation .scale-item {
     min-width: 45px;
     font-size: 0.65rem;
     padding: 0.4rem 0.2rem;

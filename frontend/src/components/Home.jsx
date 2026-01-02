@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { API_URL } from '../config';
-import './HomePage.css'
+import './Home.css'
 
 const CHART_STATS = {
   total: 6186,
@@ -86,7 +86,7 @@ const CA_PROVINCES = [
   { name: 'Saskatchewan', abbr: 'SK', count: 42 },
 ]
 
-function HomePage() {
+function Home() {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchType, setSearchType] = useState('keyword')
   const [lat, setLat] = useState('')
@@ -125,23 +125,6 @@ function HomePage() {
 
   return (
     <div className="home">
-      <div className="legacy-banner">
-        <p>
-          <strong>A community effort to continue Attilla Danko's legacy.</strong> The original Clear Sky Chart creator passed away in November 2024. 
-          This open-source rebuild preserves his work for future astronomers.
-          <a href="https://github.com/kirenia/clear-dark-sky" target="_blank" rel="noopener noreferrer">Contribute on GitHub</a>
-        </p>
-      </div>
-      <header className="header">
-        <nav className="nav">
-          <a href="/" className="nav__logo">ClearDarkSky</a>
-          <div className="nav__links">
-            <a href="/charts">All Charts</a>
-            <a href="/about">About</a>
-          </div>
-        </nav>
-      </header>
-
       <main className="main">
         <section className="hero">
           <h1 className="hero__title">ClearDarkSky</h1>
@@ -294,7 +277,7 @@ function HomePage() {
             Good transparency means you can see faint objects. Good seeing means steady 
             air for planetary detail.
           </p>
-          <a href="/about/reading-charts" className="text-link">Learn how to read a chart →</a>
+          <a href="/docs" className="text-link">Learn how to read a chart →</a>
         </section>
 
         <section className="request-section">
@@ -307,39 +290,8 @@ function HomePage() {
           <a href="/request" className="btn">Request a Chart</a>
         </section>
       </main>
-
-      <footer className="footer">
-        <div className="footer__content">
-          <div className="footer__main">
-            <div className="footer__attribution">
-              <p>
-                Created by <strong>Attilla Danko</strong> (1955–2024)
-              </p>
-              <p>
-                Rebuilt by <a href="https://github.com/kiregongora">Kire</a> to keep his work alive.
-              </p>
-            </div>
-            
-            <div className="footer__credits">
-              <p>
-                Forecast data: <a href="https://weather.gc.ca/astro/index_e.html">Environment Canada</a> · 
-                Model by Allan Rahill
-              </p>
-            </div>
-            
-            <div className="footer__links">
-              <a href="/about">About</a>
-              <a href="/credits">Credits</a>
-              <a href="/privacy">Privacy</a>
-              <a href="mailto:contact@cleardarksky.com">Contact</a>
-            </div>
-          </div>
-          
-          <p className="footer__tribute">Clear skies, Attilla. ✨</p>
-        </div>
-      </footer>
     </div>
   )
 }
 
-export default HomePage
+export default Home

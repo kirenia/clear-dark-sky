@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { API_URL } from '../config';
-import './HomePage.css';
-import './AllChartsPage.css';
+import './Home.css';
+import './Charts.css';
 
-function AllChartsPage() {
+function Charts() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -83,23 +83,7 @@ function AllChartsPage() {
 
   return (
     <div className="all-charts-page">
-      <div className="legacy-banner">
-        <p>
-          <strong>A community effort to continue Attilla Danko's legacy.</strong> The original Clear Sky Chart creator passed away in November 2024. 
-          This open-source rebuild preserves his work for future astronomers.
-          <a href="https://github.com/kirenia/clear-dark-sky" target="_blank" rel="noopener noreferrer">Contribute on GitHub</a>
-        </p>
-      </div>
-      <header className="header">
-        <nav className="nav">
-          <Link to="/" className="nav__logo">ClearDarkSky</Link>
-          <div className="nav__links">
-            <Link to="/charts">All Charts</Link>
-            <Link to="/about">About</Link>
-          </div>
-        </nav>
-      </header>
-
+<main className="all-charts-content">
       <div className="all-charts-header">
         <div className="breadcrumb">
           <Link to="/">Home</Link> &gt; All Charts
@@ -110,27 +94,28 @@ function AllChartsPage() {
         </p>
       </div>
 
-      <div className="search-bar">
-        <input
-          type="text"
-          placeholder="Search locations..."
-          value={searchQuery}
-          onChange={(e) => handleSearchChange(e.target.value)}
-        />
-        {searchQuery && (
-          <button onClick={() => handleSearchChange('')} className="clear-search">×</button>
-        )}
-      </div>
+      <div className="all-charts-content">
+        <div className="search-bar">
+          <input
+            type="text"
+            placeholder="Search locations..."
+            value={searchQuery}
+            onChange={(e) => handleSearchChange(e.target.value)}
+          />
+          {searchQuery && (
+            <button onClick={() => handleSearchChange('')} className="clear-search">×</button>
+          )}
+        </div>
 
-      <nav className="country-nav">
-        {countries.map(country => (
-          <a key={country} href={`#${country.replace(/\s+/g, '-')}`}>
-            {country}
-          </a>
-        ))}
-      </nav>
+        <nav className="country-nav">
+          {countries.map(country => (
+            <a key={country} href={`#${country.replace(/\s+/g, '-')}`}>
+              {country}
+            </a>
+          ))}
+        </nav>
 
-      <div className="locations-list">
+        <div className="locations-list">
         {sortedCountries.map(country => {
           const regions = grouped[country];
           const sortedRegions = Object.keys(regions).sort();
@@ -164,46 +149,17 @@ function AllChartsPage() {
             </section>
           );
         })}
-      </div>
-
-      {filtered.length === 0 && (
-        <div className="no-results">
-          No locations found matching "{searchQuery}"
         </div>
-      )}
 
-      <footer className="footer">
-        <div className="footer__content">
-          <div className="footer__main">
-            <div className="footer__attribution">
-              <p>
-                Created by <strong>Attilla Danko</strong> (1955–2024)
-              </p>
-              <p>
-                Rebuilt by <a href="https://github.com/kiregongora">Kire</a> to keep his work alive.
-              </p>
-            </div>
-            
-            <div className="footer__credits">
-              <p>
-                Forecast data: <a href="https://weather.gc.ca/astro/index_e.html">Environment Canada</a> · 
-                Model by Allan Rahill
-              </p>
-            </div>
-            
-            <div className="footer__links">
-              <Link to="/about">About</Link>
-              <Link to="/credits">Credits</Link>
-              <Link to="/privacy">Privacy</Link>
-              <a href="mailto:contact@cleardarksky.com">Contact</a>
-            </div>
+        {filtered.length === 0 && (
+          <div className="no-results">
+            No locations found matching "{searchQuery}"
           </div>
-          
-          <p className="footer__tribute">Clear skies, Attilla. ✨</p>
-        </div>
-      </footer>
+        )}
+      </div>
+    </main>
     </div>
   );
 }
 
-export default AllChartsPage;
+export default Charts;
