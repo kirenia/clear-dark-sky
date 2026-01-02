@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
 import './Home.css';
-import './Documentation.css';
+import './Docs.css';
 
-function Documentation() {
+function Docs() {
   return (
-    <div className="documentation">
+    <div className="docs">
       <div className="breadcrumb">
         <Link to="/">Home</Link> &gt; Reading the Charts
       </div>
@@ -237,4 +237,4 @@ function Documentation() {
   );
 }
 
-export default Documentation;
+export default Docs;

@@ -1,25 +1,25 @@
-.documentation {
+.docs {
   max-width: 960px;
   margin: 0 auto;
   padding: 2rem 1rem;
 }
 
-.documentation .breadcrumb {
+.docs .breadcrumb {
   font-size: 0.875rem;
   color: var(--text-muted);
   margin-bottom: 1.5rem;
 }
 
-.documentation .breadcrumb a {
+.docs .breadcrumb a {
   color: var(--primary);
   text-decoration: none;
 }
 
-.documentation .breadcrumb a:hover {
+.docs .breadcrumb a:hover {
   text-decoration: underline;
 }
 
-.documentation h1 {
+.docs h1 {
   color: var(--text);
   font-size: 2rem;
   margin-bottom: 1.5rem;
@@ -27,7 +27,7 @@
   padding-bottom: 0.5rem;
 }
 
-.documentation h2 {
+.docs h2 {
   color: var(--text);
   font-size: 1.4rem;
   margin-top: 2.5rem;
@@ -36,18 +36,18 @@
   border-bottom: 1px solid var(--border);
 }
 
-.documentation section {
+.docs section {
   margin-bottom: 2rem;
 }
 
-.documentation .intro {
+.docs .intro {
   background: var(--bg-alt);
   padding: 1.5rem;
   border-radius: 8px;
   border-left: 4px solid var(--primary);
 }
 
-.documentation .summary-tip {
+.docs .summary-tip {
   background: #e8f4e8;
   padding: 1rem;
   border-radius: 4px;
@@ -55,23 +55,23 @@
   margin-bottom: 0;
 }
 
-.documentation p {
+.docs p {
   line-height: 1.7;
   margin-bottom: 1rem;
   color: var(--text);
 }
 
-.documentation ul {
+.docs ul {
   margin: 1rem 0;
   padding-left: 1.5rem;
 }
 
-.documentation li {
+.docs li {
   line-height: 1.6;
   margin-bottom: 0.5rem;
 }
 
-.documentation .color-scale {
+.docs .color-scale {
   display: flex;
   flex-wrap: wrap;
   gap: 2px;
@@ -81,7 +81,7 @@
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
-.documentation .scale-item {
+.docs .scale-item {
   flex: 1;
   min-width: 60px;
   padding: 0.5rem 0.25rem;
@@ -91,70 +91,70 @@
   border: 1px solid rgba(0,0,0,0.1);
 }
 
-.documentation .darkness-scale .scale-item,
-.documentation .humidity-scale .scale-item,
-.documentation .temp-scale .scale-item {
+.docs .darkness-scale .scale-item,
+.docs .humidity-scale .scale-item,
+.docs .temp-scale .scale-item {
   min-width: 70px;
 }
 
-.documentation .accuracy-note {
+.docs .accuracy-note {
   background: #f0f4f8;
   padding: 0.75rem 1rem;
   border-radius: 4px;
   font-size: 0.9rem;
 }
 
-.documentation .note {
+.docs .note {
   font-size: 0.9rem;
   color: var(--text-muted);
   font-style: italic;
 }
 
-.documentation .warning {
+.docs .warning {
   background: #fff3e0;
   padding: 0.75rem 1rem;
   border-radius: 4px;
   border-left: 3px solid #ff9800;
 }
 
-.documentation .credits {
+.docs .credits {
   background: var(--bg-alt);
   padding: 1.5rem;
   border-radius: 8px;
   margin-top: 3rem;
 }
 
-.documentation .credits h2 {
+.docs .credits h2 {
   margin-top: 0;
 }
 
-.documentation .credits a {
+.docs .credits a {
   color: var(--primary);
   text-decoration: none;
 }
 
-.documentation .credits a:hover {
+.docs .credits a:hover {
   text-decoration: underline;
 }
 
 @media (max-width: 600px) {
-  .documentation {
+  .docs {
     padding: 1rem;
   }
 
-  .documentation h1 {
+  .docs h1 {
     font-size: 1.5rem;
   }
 
-  .documentation h2 {
+  .docs h2 {
     font-size: 1.2rem;
   }
 
-  .documentation .color-scale {
+  .docs .color-scale {
     flex-wrap: wrap;
   }
 
-  .documentation .scale-item {
+  .docs .scale-item {
     min-width: 45px;
     font-size: 0.65rem;
     padding: 0.4rem 0.2rem;
