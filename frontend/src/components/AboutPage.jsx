@@ -58,7 +58,7 @@ function AboutPage() {
             We're rebuilding the Clear Sky Chart using modern, sustainable web technologies 
             while preserving the familiar interface that astronomers have relied on for 
             years. The same Canadian Meteorological Centre data, the same color-coded 
-            forecasts, the same utility—just on a more maintainable foundation.
+            forecasts, the same utility, just on a more maintainable foundation.
           </p>
         </section>
 
