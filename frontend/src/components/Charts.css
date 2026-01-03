@@ -8,9 +8,9 @@
 }
 
 .all-charts-content {
-  max-width: 1000px;
+  max-width: var(--max-width);
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem;
 }
 
 .all-charts-page--loading,
@@ -22,7 +22,7 @@
 
 /* Header */
 .all-charts-header {
-  max-width: 1000px;
+  max-width: var(--max-width);
   margin: 0 auto;
   padding: 1rem 1.5rem;
   width: 100%;
@@ -30,7 +30,7 @@
 }
 
 .all-charts-content {
-  max-width: 1000px;
+  max-width: var(--max-width);
   margin: 0 auto;
   padding: 0 1.5rem 2rem;
   width: 100%;

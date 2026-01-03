@@ -1,7 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { API_URL } from '../config';
 import './Home.css'
+import './Forecast.css'
+
+const LOCAL_CHART_KEY = 'cleardarksky_local_chart';
 
 const CHART_STATS = {
   total: 6186,
@@ -13,6 +16,7 @@ const CHART_STATS = {
   }
 }
 
+//
 const BROWSE_CATEGORIES = [
   { name: 'Astronomy Clubs', slug: 'clubs' },
   { name: 'Observatories', slug: 'observatories' },
@@ -105,6 +109,283 @@ const RELATED_SITES = [
   },
 ]
 
+// Full color scales for chart
+const COLORS = {
+  cloud: [
+    { max: 5, color: '#003e7e' },
+    { max: 15, color: '#135393' },
+    { max: 25, color: '#2666a6' },
+    { max: 35, color: '#4e8ece' },
+    { max: 45, color: '#62a2e2' },
+    { max: 55, color: '#76b6f6' },
+    { max: 65, color: '#99d9d9' },
+    { max: 75, color: '#adeded' },
+    { max: 85, color: '#c1c1c1' },
+    { max: 95, color: '#e9e9e9' },
+    { max: 101, color: '#fafafa' }
+  ],
+  transparency: [
+    { value: 'too_cloudy', color: '#f9f9f9' },
+    { value: 'poor', color: '#c7c7c7' },
+    { value: 'below_avg', color: '#95d5d5' },
+    { value: 'average', color: '#63a3e3' },
+    { value: 'above_avg', color: '#2c6cac' },
+    { value: 'transparent', color: '#003f7f' }
+  ],
+  seeing: [
+    { value: 'too_cloudy', color: '#f9f9f9' },
+    { value: 'bad', color: '#c7c7c7' },
+    { value: 'poor', color: '#95d5d5' },
+    { value: 'average', color: '#63a3e3' },
+    { value: 'good', color: '#2c6cac' },
+    { value: 'excellent', color: '#003f7f' }
+  ],
+  darkness: [
+    { max: -3.5, color: '#ffffff' },
+    { max: -2.5, color: '#fff1d8' },
+    { max: -1.5, color: '#ffe3b1' },
+    { max: -0.5, color: '#ffd58a' },
+    { max: 0.5, color: '#ffc662' },
+    { max: 1.5, color: '#ffb83b' },
+    { max: 2.5, color: '#ffaa14' },
+    { max: 3.25, color: '#00ffff' },
+    { max: 3.75, color: '#00cbff' },
+    { max: 4.25, color: '#0096ff' },
+    { max: 4.75, color: '#0064e4' },
+    { max: 5.25, color: '#0032ca' },
+    { max: 5.75, color: '#0000af' },
+    { max: 6.25, color: '#000042' },
+    { max: 7.0, color: '#00004b' }
+  ],
+  smoke: [
+    { max: 2, color: '#003f7f' },
+    { max: 5, color: '#4f8fcf' },
+    { max: 10, color: '#78bec8' },
+    { max: 20, color: '#87d2c1' },
+    { max: 40, color: '#d68f87' },
+    { max: 60, color: '#c96459' },
+    { max: 80, color: '#bd3b2d' },
+    { max: 100, color: '#b51504' },
+    { max: 200, color: '#654321' },
+    { max: 1000, color: '#37220f' }
+  ],
+  wind: [
+    { max: 5, color: '#003f7f' },
+    { max: 11, color: '#2c6cac' },
+    { max: 16, color: '#63a3e3' },
+    { max: 28, color: '#95d5d5' },
+    { max: 45, color: '#c7c7c7' },
+    { max: 200, color: '#f9f9f9' }
+  ],
+  humidity: [
+    { max: 25, color: '#08035d' },
+    { max: 30, color: '#0d4d8d' },
+    { max: 35, color: '#3070b0' },
+    { max: 40, color: '#4e8ece' },
+    { max: 45, color: '#71b1f1' },
+    { max: 50, color: '#80c0c0' },
+    { max: 55, color: '#09feed' },
+    { max: 60, color: '#55faad' },
+    { max: 65, color: '#94fe6a' },
+    { max: 70, color: '#eafb16' },
+    { max: 75, color: '#fec600' },
+    { max: 80, color: '#fc8602' },
+    { max: 85, color: '#fe3401' },
+    { max: 90, color: '#ea0000' },
+    { max: 95, color: '#b70000' },
+    { max: 100, color: '#e10000' }
+  ],
+  temperature: [
+    { max: -40, color: '#fc00fc' },
+    { max: -31, color: '#000085' },
+    { max: -21, color: '#0000b2' },
+    { max: -12, color: '#0000ec' },
+    { max: -3, color: '#0034fe' },
+    { max: 5, color: '#0089fe' },
+    { max: 14, color: '#00d4fe' },
+    { max: 23, color: '#1efede' },
+    { max: 32, color: '#fbfbfb' },
+    { max: 41, color: '#5efe9e' },
+    { max: 50, color: '#a2fe5a' },
+    { max: 59, color: '#fede00' },
+    { max: 68, color: '#fe9e00' },
+    { max: 77, color: '#fe5a00' },
+    { max: 86, color: '#fe1e00' },
+    { max: 95, color: '#e20000' },
+    { max: 104, color: '#a90000' },
+    { max: 113, color: '#7e0000' },
+    { max: 200, color: '#c6c6c6' }
+  ]
+};
+
+function getColor(value, scale, type = 'range') {
+  if (value === null || value === undefined) {
+    return '#ffffff';
+  }
+  if (type === 'value' || scale[0]?.value !== undefined) {
+    const entry = scale.find(s => s.value === value);
+    return entry ? entry.color : '#ffffff';
+  }
+  for (const entry of scale) {
+    if (value <= entry.max) {
+      return entry.color;
+    }
+  }
+  return scale[scale.length - 1].color;
+}
+
+function groupHoursByLocalDate(allHours, tzOffset) {
+  const groups = [];
+  let currentGroup = null;
+  
+  allHours.forEach((hour, i) => {
+    let timeStr = hour.time;
+    if (!timeStr.endsWith('Z') && !timeStr.includes('+')) {
+      timeStr += 'Z';
+    }
+    const utcDate = new Date(timeStr);
+    const localMs = utcDate.getTime() + (tzOffset * 60 * 60 * 1000);
+    const localDate = new Date(localMs);
+    const dateKey = localDate.toISOString().split('T')[0];
+    
+    if (!currentGroup || currentGroup.dateKey !== dateKey) {
+      currentGroup = {
+        dateKey,
+        date: localDate,
+        startIndex: i,
+        count: 1
+      };
+      groups.push(currentGroup);
+    } else {
+      currentGroup.count++;
+    }
+  });
+  
+  return groups;
+}
+
+function LocalChart({ forecast }) {
+  const location = forecast.location;
+  const allHours = forecast.days.flatMap(day => day.hours);
+  const tzOffset = location.tz_offset ?? -7;
+  const dayGroups = groupHoursByLocalDate(allHours, tzOffset);
+  const newDayIndices = new Set(dayGroups.slice(1).map(g => g.startIndex));
+
+  const now = new Date();
+  const localNow = new Date(now.getTime() + (tzOffset * 60 * 60 * 1000));
+  const localDateStr = localNow.toISOString().split('T')[0];
+
+  const skyRows = [
+    { key: 'cloud_cover_pct', label: 'Cloud Cover', scale: COLORS.cloud, type: 'range' },
+    { key: 'transparency', label: 'Transparency', scale: COLORS.transparency, type: 'value' },
+    { key: 'seeing', label: 'Seeing', scale: COLORS.seeing, type: 'value' },
+    { key: 'darkness', label: 'Darkness', scale: COLORS.darkness, type: 'range' },
+  ];
+
+  const groundRows = [
+    { key: 'smoke_ugm3', label: 'Smoke', scale: COLORS.smoke, type: 'range' },
+    { key: 'wind_speed_mph', label: 'Wind', scale: COLORS.wind, type: 'range' },
+    { key: 'humidity_pct', label: 'Humidity', scale: COLORS.humidity, type: 'range' },
+    { key: 'temperature_f', label: 'Temperature', scale: COLORS.temperature, type: 'range' }
+  ];
+
+  const renderDataRow = (row) => (
+    <div key={row.key} className="chart-row">
+      <div className="chart-label">{row.label}:</div>
+      <div className="chart-cells">
+        {allHours.map((hour, i) => {
+          const isNewDay = newDayIndices.has(i);
+          return (
+            <div
+              key={i}
+              className={`chart-cell chart-cell--data ${isNewDay ? 'chart-cell--midnight' : ''}`}
+              style={{ backgroundColor: getColor(hour[row.key], row.scale, row.type) }}
+              title={`${row.label}: ${hour[row.key] ?? 'N/A'}`}
+            />
+          );
+        })}
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="chart-container">
+      <div className="chart-info-bar">
+        <div className="chart-datetime">{localDateStr} Local Time (GMT{tzOffset >= 0 ? '+' : ''}{tzOffset})</div>
+      </div>
+      
+      <div className="forecast-chart">
+        {/* Date header row */}
+        <div className="chart-row chart-row--dates">
+          <div className="chart-label"></div>
+          <div className="chart-cells">
+            {dayGroups.map((group, groupIdx) => {
+              const weekday = group.date.toLocaleDateString('en-US', { weekday: 'short', timeZone: 'UTC' });
+              const dayNum = group.date.getUTCDate();
+              const spanWidth = (group.count * 13) - 1;
+              const isNewDay = groupIdx > 0;
+              return (
+                <div 
+                  key={groupIdx}
+                  className={`chart-date-span ${isNewDay ? 'chart-date-span--midnight' : ''}`}
+                  style={{ width: `${spanWidth}px` }}
+                >
+                  {weekday}, {dayNum}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Time header - stacked digits */}
+        <div className="chart-row chart-row--time">
+          <div className="chart-label"></div>
+          <div className="chart-cells">
+            {allHours.map((hour, i) => {
+              const tens = Math.floor(hour.hour_local / 10);
+              const ones = hour.hour_local % 10;
+              const isNewDay = newDayIndices.has(i);
+              return (
+                <div 
+                  key={i} 
+                  className={`chart-cell chart-cell--time ${isNewDay ? 'chart-cell--midnight' : ''}`}
+                >
+                  <span className="time-tens">{tens}</span>
+                  <span className="time-ones">{ones}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Sky section */}
+        <div className="chart-section">
+          <div className="chart-section-label chart-section-label--sky">SKY</div>
+          <div className="chart-section-rows">
+            {skyRows.map(renderDataRow)}
+          </div>
+        </div>
+
+        {/* Ground section */}
+        <div className="chart-section">
+          <div className="chart-section-label chart-section-label--ground">GROUND</div>
+          <div className="chart-section-rows">
+            {groundRows.map(renderDataRow)}
+          </div>
+        </div>
+      </div>
+      
+      {/* Copyright footer */}
+      <div className="chart-copyright">
+        <span>© {new Date().getFullYear()} Attilla Danko</span>
+        <span>forecast: A.Rahill</span>
+        <span>data: Environment Canada / Environnement Canada</span>
+        <span>Last updated: {forecast.forecast_run}</span>
+      </div>
+    </div>
+  );
+}
+
 function Home() {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchType, setSearchType] = useState('keyword')
@@ -112,6 +393,130 @@ function Home() {
   const [lon, setLon] = useState('')
   const [geoLoading, setGeoLoading] = useState(false)
   const [geoError, setGeoError] = useState('')
+  const [localChart, setLocalChart] = useState(null)
+  const [localChartLoading, setLocalChartLoading] = useState(true)
+  const [localChartError, setLocalChartError] = useState('')
+
+  // Fetch local chart on mount
+  useEffect(() => {
+    async function getLocalChart() {
+      try {
+        // 1. Check localStorage first
+        const cached = localStorage.getItem(LOCAL_CHART_KEY);
+        if (cached) {
+          const { key, timestamp } = JSON.parse(cached);
+          // Use cache if less than 24 hours old
+          if (Date.now() - timestamp < 24 * 60 * 60 * 1000) {
+            console.log('Using cached chart key:', key);
+            const res = await fetch(`${API_URL}/api/forecast/${key}`);
+            if (res.ok) {
+              setLocalChart(await res.json());
+              setLocalChartLoading(false);
+              return;
+            }
+          }
+        }
+
+        // 2. Try browser geolocation
+        console.log('Trying browser geolocation...');
+        let coords = await getBrowserLocation().catch((err) => {
+          console.log('Browser geolocation failed:', err.message);
+          return null;
+        });
+        
+        // 3. Fall back to IP geolocation
+        if (!coords) {
+          console.log('Trying IP geolocation...');
+          coords = await getIPLocation().catch((err) => {
+            console.log('IP geolocation failed:', err.message);
+            return null;
+          });
+        }
+
+        if (!coords) {
+          console.log('No coordinates available');
+          setLocalChartError('Could not determine location');
+          setLocalChartLoading(false);
+          return;
+        }
+
+        console.log('Got coords:', coords);
+
+        // Find nearest chart
+        const nearbyUrl = `${API_URL}/api/locations/nearby?lat=${coords.lat}&lon=${coords.lon}&limit=1`;
+        console.log('Fetching nearby:', nearbyUrl);
+        const nearbyRes = await fetch(nearbyUrl);
+        if (!nearbyRes.ok) {
+          console.log('Nearby API failed:', nearbyRes.status);
+          setLocalChartError('Could not find nearby charts');
+          setLocalChartLoading(false);
+          return;
+        }
+        const nearby = await nearbyRes.json();
+        console.log('Nearby response:', nearby);
+        
+        if (!nearby || nearby.length === 0) {
+          setLocalChartError('No charts found near you');
+          setLocalChartLoading(false);
+          return;
+        }
+        
+        // nearby returns { location: {...}, distance_km: ... }
+        const nearest = nearby[0].location;
+        
+        if (!nearest || !nearest.key) {
+          console.log('No key in nearest location:', nearest);
+          setLocalChartError('Invalid location data');
+          setLocalChartLoading(false);
+          return;
+        }
+
+        // Cache the chart key
+        localStorage.setItem(LOCAL_CHART_KEY, JSON.stringify({
+          key: nearest.key,
+          timestamp: Date.now()
+        }));
+
+        // Fetch the forecast
+        console.log('Fetching forecast for:', nearest.key);
+        const forecastRes = await fetch(`${API_URL}/api/forecast/${nearest.key}`);
+        if (forecastRes.ok) {
+          setLocalChart(await forecastRes.json());
+        } else {
+          console.log('Forecast fetch failed:', forecastRes.status);
+          setLocalChartError('Could not load forecast');
+        }
+      } catch (err) {
+        console.error('Failed to get local chart:', err);
+        setLocalChartError('Something went wrong');
+      }
+      setLocalChartLoading(false);
+    }
+
+    getLocalChart();
+  }, []);
+
+  function getBrowserLocation() {
+    return new Promise((resolve, reject) => {
+      if (!navigator.geolocation) {
+        reject(new Error('Geolocation not supported'));
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(
+        (pos) => resolve({ lat: pos.coords.latitude, lon: pos.coords.longitude }),
+        (err) => reject(err),
+        { timeout: 5000 }
+      );
+    });
+  }
+
+  async function getIPLocation() {
+    const res = await fetch('https://ipapi.co/json/');
+    if (!res.ok) throw new Error('IP lookup failed');
+    const data = await res.json();
+    if (!data.latitude || !data.longitude) throw new Error('No coords in IP response');
+    return { lat: data.latitude, lon: data.longitude };
+  }
 
   const handleSearch = (e) => {
     e.preventDefault()
@@ -155,25 +560,51 @@ function Home() {
           </p>
         </section>
 
+        {/* Local Chart Section */}
+        {localChartLoading ? (
+          <section className="local-chart-section">
+            <p className="local-chart-loading">Finding your nearest chart...</p>
+          </section>
+        ) : localChart ? (
+          <section className="local-chart-section">
+            <div className="local-chart-header">
+              <div className="local-chart-title-row">
+                <h2 className="section-title">Your Local Forecast</h2>
+                <span className="local-chart-name">{localChart.location.name}</span>
+                {localChart.location.region && (
+                  <span className="local-chart-region">{localChart.location.region}, {localChart.location.country}</span>
+                )}
+              </div>
+              <button 
+                className="local-chart-change"
+                onClick={() => {
+                  localStorage.removeItem(LOCAL_CHART_KEY);
+                  setLocalChart(null);
+                  setLocalChartLoading(true);
+                  window.location.reload();
+                }}
+              >
+                Change location
+              </button>
+            </div>
+            <LocalChart forecast={localChart} />
+            <Link to={`/c/${localChart.location.key}`} className="local-chart-cta">
+              View full forecast →
+            </Link>
+          </section>
+        ) : localChartError ? (
+          <section className="local-chart-section">
+            <p className="local-chart-error">{localChartError}</p>
+          </section>
+        ) : null}
+
         <section className="search-section">
           <h2 className="section-title">Find a Chart</h2>
           
           <form className="search-form" onSubmit={handleSearch}>
             <div className="search-tabs">
-              <button 
-                type="button"
-                className={`search-tab ${searchType === 'keyword' ? 'search-tab--active' : ''}`}
-                onClick={() => setSearchType('keyword')}
-              >
-                By Name
-              </button>
-              <button 
-                type="button"
-                className={`search-tab ${searchType === 'location' ? 'search-tab--active' : ''}`}
-                onClick={() => setSearchType('location')}
-              >
-                By Location
-              </button>
+      
+            
             </div>
 
             {searchType === 'keyword' ? (
@@ -195,7 +626,7 @@ function Home() {
                   onClick={getMyLocation}
                   disabled={geoLoading}
                 >
-                  {geoLoading ? 'Getting location...' : '📍 Use My Location'}
+                  {geoLoading ? 'Getting location...' : 'Use My Location'}
                 </button>
                 {geoError && <p className="geo-error">{geoError}</p>}
                 <div className="coord-inputs">
@@ -227,12 +658,16 @@ function Home() {
             )}
           </form>
 
+          {/*
           <div className="quick-links">
             <a href="/coverage" className="quick-link">Coverage Map</a>
             <a href="/charts/map" className="quick-link">Browse on Map</a>
           </div>
+          */}
+
         </section>
 
+        {/*
         <section className="browse-section">
           <h2 className="section-title">Browse Charts</h2>
           
@@ -282,6 +717,7 @@ function Home() {
             </div>
           </div>
         </section>
+        */}
 
         <section className="about-section">
           <h2 className="section-title">What is a Clear Sky Chart?</h2>

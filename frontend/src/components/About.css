@@ -5,9 +5,9 @@
 }
 
 .about-content {
-  max-width: 1000px;
+  max-width: var(--max-width);
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem;
 }
 
 .hero-section {

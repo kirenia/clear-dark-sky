@@ -1,5 +1,5 @@
 .forecast {
-  max-width: 1200px;
+  max-width: var(--max-width);
   margin: 0 auto;
   padding: 1rem;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -66,26 +66,55 @@
 
 /* Chart Container */
 .chart-container {
-  background: #0d1117;
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
+  background: #000;
+  border: 1px solid #333;
+  border-radius: 0;
   padding: 1rem;
   margin-bottom: 1.5rem;
   overflow-x: auto;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  position: relative;
 }
 
-.chart-updated {
-  font-size: 0.75rem;
-  color: var(--color-text-light);
+/* Styled scrollbar */
+.chart-container::-webkit-scrollbar {
+  height: 12px;
+}
+
+.chart-container::-webkit-scrollbar-track {
+  background: #222;
+  border-radius: 6px;
+}
+
+.chart-container::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #8be9fd, #50fa7b);
+  border-radius: 6px;
+}
+
+.chart-container::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(90deg, #a8f0ff, #70ff9b);
+}
+
+/* Firefox */
+.chart-container {
+  scrollbar-width: auto;
+  scrollbar-color: #8be9fd #222;
+}
+
+.chart-info-bar {
   margin-bottom: 0.5rem;
-  text-align: right;
+}
+
+.chart-datetime {
+  font-size: 0.875rem;
+  color: #fff;
 }
 
 /* Chart Controls */
 .chart-controls {
   background: var(--color-info-bg);
   border: 1px solid var(--color-info-border);
-  border-radius: 6px;
+  border-radius: 0;
   padding: 0.75rem 1rem;
   margin-bottom: 1rem;
   font-size: 0.875rem;
@@ -113,8 +142,9 @@
 
 /* Forecast Chart */
 .forecast-chart {
-  min-width: 800px;
-  background: #0d1117;
+  min-width: 900px;
+  background: #000;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
 }
 
 /* Row layout */
@@ -124,16 +154,17 @@
 }
 
 .chart-label {
-  width: 90px;
-  min-width: 90px;
-  padding: 0 8px 0 0;
-  font-size: 11px;
+  width: 100px;
+  min-width: 100px;
+  padding: 0 4px 0 0;
+  font-size: 12px;
   font-weight: 500;
-  color: #888;
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   text-align: right;
+  white-space: nowrap;
 }
 
 .chart-cells {
@@ -141,12 +172,12 @@
   gap: 1px;
 }
 
-/* Data cells - perfect squares */
+/* Data cells - 12x12 squares */
 .chart-cell--data {
-  width: 10px;
-  height: 10px;
-  min-width: 10px;
-  min-height: 10px;
+  width: 12px;
+  height: 12px;
+  min-width: 12px;
+  min-height: 12px;
   flex-shrink: 0;
 }
 
@@ -172,8 +203,8 @@
 
 .chart-date-span {
   text-align: center;
-  font-size: 10px;
-  color: #aaa;
+  font-size: 12px;
+  color: #fff;
   white-space: nowrap;
   overflow: hidden;
   box-sizing: border-box;
@@ -195,8 +226,8 @@
 }
 
 .chart-cell--time {
-  width: 10px;
-  min-width: 10px;
+  width: 12px;
+  min-width: 12px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -208,10 +239,10 @@
 .chart-cell--time .time-tens,
 .chart-cell--time .time-ones {
   display: block;
-  font-size: 8px;
-  color: #777;
-  height: 9px;
-  line-height: 9px;
+  font-size: 10px;
+  color: #fff;
+  height: 11px;
+  line-height: 11px;
   text-align: center;
 }
 
@@ -222,51 +253,53 @@
 
 /* Legend - Danko style */
 .chart-legend {
-  background: #000;
-  border: 1px solid #333;
-  padding: 1rem;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  padding: 1.5rem;
   margin-bottom: 1.5rem;
 }
 
 .chart-legend h3 {
-  margin: 0 0 1rem 0;
-  font-size: 1rem;
-  color: #ccc;
+  margin: 0 0 1.25rem 0;
+  font-size: 1.25rem;
+  color: #333;
 }
 
 .legend-section {
   display: flex;
-  align-items: flex-start;
-  margin-bottom: 8px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.legend-section:last-of-type {
+  margin-bottom: 0;
 }
 
 .legend-section-title {
-  width: 100px;
-  min-width: 100px;
-  font-size: 11px;
+  font-size: 0.9rem;
   font-weight: 600;
-  color: #aaa;
-  padding-top: 2px;
+  color: #333;
+  margin-bottom: 0.375rem;
 }
 
 .legend-items {
   display: flex;
   flex-wrap: wrap;
-  gap: 1px;
+  gap: 2px;
 }
 
 .legend-block {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 2px 4px;
-  font-size: 9px;
+  padding: 4px 8px;
+  font-size: 12px;
   white-space: nowrap;
+  border: 1px solid #999;
 }
 
 .legend-text {
-  font-size: 9px;
+  font-size: 12px;
 }
 
 .legend-text.light {
@@ -276,6 +309,21 @@
 .legend-text.dark {
   color: #000;
 }
+
+.legend-link {
+  margin: 1rem 0 0 0;
+  font-size: 0.9rem;
+}
+
+.legend-link a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.legend-link a:hover {
+  text-decoration: underline;
+}
+
 /* Links */
 .chart-links {
   margin-bottom: 1.5rem;
@@ -297,7 +345,7 @@
   padding: 0.5rem 1rem;
   background: var(--color-bg-alt);
   border: 1px solid var(--color-border);
-  border-radius: 4px;
+
   color: var(--color-primary);
   text-decoration: none;
   font-size: 0.875rem;
@@ -325,47 +373,40 @@
   text-decoration: underline;
 }
 
-/* Chart info header */
-.chart-row--info .chart-label {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  padding-right: 8px;
-}
-
-.chart-date {
-  font-size: 11px;
-  color: #aaa;
-  font-family: monospace;
-}
-
-.chart-timezone {
-  font-size: 10px;
-  color: #888;
-}
-
-.chart-gmt {
-  font-size: 9px;
-  color: #666;
-}
-
-/* Chart sections */
+/* Chart sections with vertical labels inside */
 .chart-section {
   display: flex;
+  margin-top: 8px;
+}
+
+.chart-section:first-of-type {
   margin-top: 4px;
 }
 
 .chart-section-label {
-  display: block;
-  font-size: 0.4em;
+  width: 14px;
+  min-width: 14px;
+  font-size: 10px;
+  font-weight: 600;
   text-transform: uppercase;
-  font-weight: normal;
-  padding: 0 0 0 2px;
-  color: var(--text-color);
-  writing-mode: vertical-rl;
-  text-align: center;
   letter-spacing: 1px;
-  height: 60px;
+  color: #000;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 2px;
+  box-sizing: border-box;
+}
+
+.chart-section-label--sky {
+  background: #8be9fd;
+}
+
+.chart-section-label--ground {
+  background: #50fa7b;
 }
 
 .chart-section-rows {
@@ -376,9 +417,37 @@
   margin-top: 1px;
 }
 
+.chart-section .chart-row:first-child {
+  margin-top: 0;
+}
+
 .chart-section .chart-label {
-  width: 100px;
-  min-width: 100px;
+  width: 86px;
+  min-width: 86px;
+  align-items: flex-start;
+  padding-top: 0;
+  margin-top: -2px;
+}
+
+/* Chart copyright footer */
+.chart-copyright {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 2rem;
+  padding-top: 0.75rem;
+  margin-top: 0.5rem;
+  font-size: 11px;
+  color: #fff;
+}
+
+.chart-copyright a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.chart-copyright a:hover {
+  text-decoration: underline;
 }
 
 /* Responsive */
@@ -401,27 +470,43 @@
   }
   
   .chart-label {
-    width: 70px;
-    min-width: 70px;
-    font-size: 9px;
+    width: 80px;
+    min-width: 80px;
+    font-size: 10px;
   }
   
   .chart-cell--data {
-    width: 8px;
-    height: 8px;
-    min-width: 8px;
-    min-height: 8px;
+    width: 10px;
+    height: 10px;
+    min-width: 10px;
+    min-height: 10px;
   }
   
   .chart-cell--time {
-    width: 8px;
-    min-width: 8px;
+    width: 10px;
+    min-width: 10px;
   }
   
   .chart-cell--time .time-tens,
   .chart-cell--time .time-ones {
-    font-size: 7px;
-    height: 8px;
-    line-height: 8px;
+    font-size: 8px;
+    height: 9px;
+    line-height: 9px;
+  }
+  
+  .chart-section-label {
+    width: 12px;
+    min-width: 12px;
+    font-size: 8px;
+  }
+  
+  .chart-section .chart-label {
+    width: 68px;
+    min-width: 68px;
+  }
+  
+  .chart-copyright {
+    flex-wrap: wrap;
+    gap: 1rem;
   }
 }

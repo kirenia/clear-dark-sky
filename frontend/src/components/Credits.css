@@ -1,5 +1,5 @@
 .credits {
-  max-width: 1000px;
+  max-width: var(--max-width);
   margin: 0 auto;
   padding: 2rem 1.5rem;
   background: var(--color-bg);

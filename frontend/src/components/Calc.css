@@ -10,7 +10,7 @@
 
 .calc-content {
   flex: 1;
-  max-width: 1000px;
+  max-width: var(--max-width);
   margin: 0 auto;
   padding: 1rem;
   font-size: 0.9rem;

@@ -208,6 +208,9 @@ function Forecast() {
   const tzOffset = location.tz_offset ?? -7;
   const dayGroups = groupHoursByLocalDate(allHours, tzOffset);
 
+  // Build a set of indices that start a new day (for red divider)
+  const newDayIndices = new Set(dayGroups.slice(1).map(g => g.startIndex));
+
   // Get local date for header
   const now = new Date();
   const localNow = new Date(now.getTime() + (tzOffset * 60 * 60 * 1000));
@@ -233,11 +236,11 @@ function Forecast() {
       <div className="chart-label">{row.label}:</div>
       <div className="chart-cells">
         {allHours.map((hour, i) => {
-          const isMidnight = hour.hour_local === 0 && i > 0;
+          const isNewDay = newDayIndices.has(i);
           return (
             <div
               key={i}
-              className={`chart-cell chart-cell--data ${isMidnight ? 'chart-cell--midnight' : ''}`}
+              className={`chart-cell chart-cell--data ${isNewDay ? 'chart-cell--midnight' : ''}`}
               style={{ backgroundColor: getColor(hour[row.key], row.scale, row.type) }}
               title={`${row.label}: ${hour[row.key] ?? 'N/A'}`}
             />
@@ -269,46 +272,31 @@ function Forecast() {
       </div>
 
       <div className="chart-container">
-        <div className="chart-updated">
-          Last updated: {forecast.forecast_run}
+        <div className="chart-info-bar">
+          <div className="chart-datetime">{localDateStr} Local Time (GMT{tzOffset >= 0 ? '+' : ''}{tzOffset})</div>
         </div>
         
         <div className="forecast-chart">
-          {/* Chart info header with date and timezone */}
-          <div className="chart-row chart-row--info">
-            <div className="chart-label">
-              <div className="chart-date">{localDateStr}</div>
-              <div className="chart-timezone">Local Time</div>
-              <div className="chart-gmt">(GMT {tzOffset >= 0 ? '+' : ''}{tzOffset})</div>
-            </div>
-            <div className="chart-cells"></div>
-          </div>
 
           {/* Date header row */}
           <div className="chart-row chart-row--dates">
             <div className="chart-label"></div>
             <div className="chart-cells">
-              {allHours.map((hour, i) => {
-                const group = dayGroups.find(g => i >= g.startIndex && i < g.startIndex + g.count);
-                const isFirstOfDay = group && i === group.startIndex;
-                const isMidnight = hour.hour_local === 0 && i > 0;
-                
-                if (isFirstOfDay) {
-                  const weekday = group.date.toLocaleDateString('en-US', { weekday: 'short', timeZone: 'UTC' });
-                  const dayNum = group.date.getUTCDate();
-                  const spanWidth = (group.count * 11) - 1;
-                  return (
-                    <div 
-                      key={i}
-                      className={`chart-date-span ${isMidnight ? 'chart-date-span--midnight' : ''}`}
-                      style={{ width: `${spanWidth}px` }}
-                    >
-                      {weekday}, {dayNum}
-                    </div>
-                  );
-                }
-                return null;
-              }).filter(Boolean)}
+              {dayGroups.map((group, groupIdx) => {
+                const weekday = group.date.toLocaleDateString('en-US', { weekday: 'short', timeZone: 'UTC' });
+                const dayNum = group.date.getUTCDate();
+                const spanWidth = (group.count * 13) - 1;
+                const isNewDay = groupIdx > 0;
+                return (
+                  <div 
+                    key={groupIdx}
+                    className={`chart-date-span ${isNewDay ? 'chart-date-span--midnight' : ''}`}
+                    style={{ width: `${spanWidth}px` }}
+                  >
+                    {weekday}, {dayNum}
+                  </div>
+                );
+              })}
             </div>
           </div>
 
@@ -319,11 +307,11 @@ function Forecast() {
               {allHours.map((hour, i) => {
                 const tens = Math.floor(hour.hour_local / 10);
                 const ones = hour.hour_local % 10;
-                const isMidnight = hour.hour_local === 0 && i > 0;
+                const isNewDay = newDayIndices.has(i);
                 return (
                   <div 
                     key={i} 
-                    className={`chart-cell chart-cell--time ${isMidnight ? 'chart-cell--midnight' : ''}`}
+                    className={`chart-cell chart-cell--time ${isNewDay ? 'chart-cell--midnight' : ''}`}
                   >
                     <span className="time-tens">{tens}</span>
                     <span className="time-ones">{ones}</span>
@@ -335,7 +323,7 @@ function Forecast() {
 
           {/* Sky section */}
           <div className="chart-section">
-            <div className="chart-section-label">Sky</div>
+            <div className="chart-section-label chart-section-label--sky">SKY</div>
             <div className="chart-section-rows">
               {skyRows.map(renderDataRow)}
             </div>
@@ -343,11 +331,19 @@ function Forecast() {
 
           {/* Ground section */}
           <div className="chart-section">
-            <div className="chart-section-label">Ground</div>
+            <div className="chart-section-label chart-section-label--ground">GROUND</div>
             <div className="chart-section-rows">
               {groundRows.map(renderDataRow)}
             </div>
           </div>
+        </div>
+        
+        {/* Copyright footer */}
+        <div className="chart-copyright">
+          <span>© {new Date().getFullYear()} Attilla Danko</span>
+          <span>Forecast: A.Rahill</span>
+          <span>Data: Environment Canada</span>
+          <span>Last updated: {forecast.forecast_run}</span>
         </div>
       </div>
 
