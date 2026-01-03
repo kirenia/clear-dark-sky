@@ -239,16 +239,16 @@ class ForecastBuilder:
             hourly = openmeteo_data.get("hourly", {})
             times = hourly.get("time", [])
             
-         for i, time_str in enumerate(times[:168]):
-            try:
-                dt = datetime.fromisoformat(time_str.replace('Z', '+00:00'))
-                if dt.tzinfo is None:
-                    dt = dt.replace(tzinfo=timezone.utc)
-            except:
-                dt = start_time + timedelta(hours=i)
-                
-                if dt < start_time:
-                    continue
+            for i, time_str in enumerate(times[:168]):
+                try:
+                    dt = datetime.fromisoformat(time_str.replace('Z', '+00:00'))
+                    if dt.tzinfo is None:
+                        dt = dt.replace(tzinfo=timezone.utc)
+                except:
+                    dt = start_time + timedelta(hours=i)
+                    
+                    if dt < start_time:
+                        continue
                 
                 forecast_hour = i + 1
                 
