@@ -407,7 +407,7 @@ class OpenMeteoFetcher:
     """
     Fetches ECMWF cloud data from Open-Meteo for comparison layer
     """
-    
+        
     async def fetch_forecast(self, lat: float, lon: float, 
                             forecast_days: int = 7) -> Dict[str, Any]:
         params = {
@@ -425,7 +425,7 @@ class OpenMeteoFetcher:
                 "wind_direction_10m",
             ],
             "forecast_days": forecast_days,
-            "timezone": "auto"
+            "timezone": "UTC"  # Changed from "auto"
         }
         
         try:
@@ -452,14 +452,13 @@ class OpenMeteoFetcher:
             return {"available": False, "error": str(e)}
     
     async def fetch_air_quality(self, lat: float, lon: float, 
-                                forecast_days: int = 4) -> Dict[str, Any]:
-        """Fetch smoke/PM2.5 data from Open-Meteo Air Quality API"""
+                            forecast_days: int = 4) -> Dict[str, Any]:
         params = {
             "latitude": lat,
             "longitude": lon,
             "hourly": ["pm2_5", "pm10", "dust"],
             "forecast_days": forecast_days,
-            "timezone": "auto"
+            "timezone": "UTC"  # Changed from "auto"
         }
         
         try:
