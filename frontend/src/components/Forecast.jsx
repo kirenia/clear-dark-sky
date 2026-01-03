@@ -193,11 +193,10 @@ function Forecast() {
 
         <div className="chart-controls">
           <h3>Chart Controls</h3>
-          <ol>
+          <ul>
             <li>Hold your mouse over a block to explain color and details.</li>
             <li>Click on a forecast block to show full forecast map</li>
-            <li>Check box to display color legend: <input type="checkbox" id="showLegend" /></li>
-          </ol>
+          </ul>
         </div>
         
         <div className="forecast-chart">

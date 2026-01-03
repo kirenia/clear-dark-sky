@@ -528,7 +528,6 @@ class OpenMeteoFetcher:
                 "wind_direction_10m",
             ],
             "forecast_days": forecast_days,
-            "models": "ecmwf_ifs04",  # ECMWF model specifically
             "timezone": "auto"
         }
         

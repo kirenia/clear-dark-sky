@@ -7,6 +7,15 @@ from typing import List, Optional, Dict, Any
 from datetime import datetime
 from enum import Enum
 
+def get_timezone_offset(timezone_str: str) -> float:
+    """Get current UTC offset for a timezone string."""
+    from zoneinfo import ZoneInfo
+    try:
+        tz = ZoneInfo(timezone_str)
+        return datetime.now(tz).utcoffset().total_seconds() / 3600
+    except:
+        return -7  # Default Mountain
+
 
 class LocationBase(BaseModel):
     """Base location model"""

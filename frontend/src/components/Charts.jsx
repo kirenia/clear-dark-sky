@@ -90,7 +90,7 @@ function Charts() {
         </div>
         <h1>ClearDarkSky Chart Directory</h1>
         <p className="chart-count">
-          There are <strong>{locations.length}</strong> charts.
+          Currently, there are <strong>{locations.length}</strong> charts available. The rest of the locations are slowly being added. Thank you for your patience.
         </p>
       </div>
 

@@ -1,0 +1,67 @@
+/* frontend/src/components/Embed.css */
+.embed {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 11px;
+  background: #fff;
+  padding: 4px;
+}
+
+.embed-header {
+  margin-bottom: 4px;
+}
+
+.embed-header a {
+  color: #333;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.embed-header a:hover {
+  text-decoration: underline;
+}
+
+.embed-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.embed-row {
+  display: flex;
+  align-items: center;
+}
+
+.embed-label {
+  width: 40px;
+  font-size: 9px;
+  color: #666;
+  flex-shrink: 0;
+}
+
+.embed-cells {
+  display: flex;
+  flex: 1;
+}
+
+.embed-cell {
+  flex: 1;
+  height: 12px;
+  min-width: 3px;
+  border-right: 1px solid rgba(0,0,0,0.05);
+}
+
+.embed-footer {
+  margin-top: 4px;
+  font-size: 9px;
+}
+
+.embed-footer a {
+  color: #666;
+  text-decoration: none;
+}
+
+.embed-loading, .embed-error {
+  padding: 20px;
+  text-align: center;
+  color: #666;
+}

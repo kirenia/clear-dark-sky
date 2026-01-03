@@ -10,7 +10,7 @@ import json
 import logging
 
 from ..models import (
-    Location, HourlyForecast, DayForecast, ForecastResponse
+    Location, HourlyForecast, DayForecast, ForecastResponse, get_timezone_offset
 )
 from .cmc_fetcher import cmc_fetcher, openmeteo_fetcher
 from .astro_calculator import create_calculator
@@ -97,7 +97,6 @@ COLOR_SCALES = {
         ]
     },
     "temperature": {
-        # Temperature in Fahrenheit
         "colors": [
             {"max": -40, "color": "#4400aa", "label": "< -40°F"},
             {"max": -31, "color": "#5500bb", "label": "-40 to -31°F"},
@@ -151,14 +150,17 @@ class ForecastBuilder:
                              use_cache: bool = True) -> ForecastResponse:
         """
         Build complete forecast for a location
-        
-        Combines:
-        - CMC astronomy data (seeing, transparency) - primary source
-        - CMC RDPS data (clouds from CMC model)
-        - Open-Meteo ECMWF (fallback for weather data)
-        - Calculated darkness/moon data
         """
         logger.info(f"Building forecast for {location.name} ({location.latitude}, {location.longitude})")
+        
+        # Get timezone offset - handle both Location and ForecastLocation
+        if hasattr(location, 'timezone') and location.timezone:
+            tz_offset = get_timezone_offset(location.timezone)
+        elif hasattr(location, 'tz_offset'):
+            tz_offset = location.tz_offset
+        else:
+            tz_offset = 0  # fallback to UTC
+        
         
         # Get current time and round to nearest hour
         now = datetime.now(timezone.utc)
@@ -177,24 +179,21 @@ class ForecastBuilder:
         # Try to get CMC data if GRIB parsing is available
         cmc_data = None
         if self.cmc._grib_available:
-            # Check cache first
             cache_key = f"{location.latitude:.2f}_{location.longitude:.2f}"
             cmc_data = self.cmc.get_cached_forecast(cache_key, model_run)
             
             if cmc_data is None:
-                # Extract point data from downloaded GRIB files
                 cmc_data = self.cmc.extract_point_forecast(
                     location.latitude,
                     location.longitude,
                     model_run
                 )
                 
-                # Cache if we got data
                 if cmc_data.get("seeing") or cmc_data.get("transparency"):
                     self.cmc.save_cached_forecast(cache_key, model_run, cmc_data)
                     logger.info(f"Cached CMC data for {location.name}")
         
-        # Also fetch Open-Meteo for weather data (temp, wind, humidity)
+        # Fetch Open-Meteo for weather data
         openmeteo_data = await self.openmeteo.fetch_forecast(
             location.latitude,
             location.longitude,
@@ -207,7 +206,7 @@ class ForecastBuilder:
         # Build hourly forecasts
         hourly_forecasts = []
         
-        # Index CMC data by forecast hour for easy lookup
+        # Index CMC data by forecast hour
         cmc_seeing_by_hour = {}
         cmc_transp_by_hour = {}
         cmc_cloud_by_hour = {}
@@ -235,17 +234,22 @@ class ForecastBuilder:
             hourly = openmeteo_data.get("hourly", {})
             times = hourly.get("time", [])
             
-            for i, time_str in enumerate(times[:96]):  # Limit to 96 hours (4 days)
+            for i, time_str in enumerate(times[:168]):
                 # Parse time
                 try:
                     dt = datetime.fromisoformat(time_str.replace('Z', '+00:00'))
+                    if dt.tzinfo is None:
+                        dt = dt.replace(tzinfo=timezone.utc)
                 except:
                     dt = start_time + timedelta(hours=i)
                 
-                # Calculate forecast hour relative to model run
-                forecast_hour = i + 1  # 1-based indexing for CMC files
+                # Skip past hours
+                if dt < start_time:
+                    continue
                 
-                # Get values from Open-Meteo (weather data)
+                forecast_hour = i + 1
+                
+                # Get values from Open-Meteo
                 cloud_cover = hourly.get("cloud_cover", [None] * len(times))[i]
                 temp_c = hourly.get("temperature_2m", [None] * len(times))[i]
                 humidity = hourly.get("relative_humidity_2m", [None] * len(times))[i]
@@ -253,49 +257,45 @@ class ForecastBuilder:
                 wind_dir = hourly.get("wind_direction_10m", [None] * len(times))[i]
                 visibility = hourly.get("visibility", [None] * len(times))[i]
                 
-                # Use CMC cloud if available, else Open-Meteo
+                # Use CMC cloud if available
                 cmc_cloud = cmc_cloud_by_hour.get(forecast_hour)
                 if cmc_cloud is not None:
                     cloud_cover = cmc_cloud
                 
-                # Convert temperature to Fahrenheit
+                # Convert units
                 temp_f = (temp_c * 9/5 + 32) if temp_c is not None else None
-                
-                # Convert wind speed from km/h to mph
                 wind_mph = (wind_speed * 0.621371) if wind_speed is not None else None
                 
                 # Get darkness data
-                dark = darkness_data[i] if i < len(darkness_data) else {}
+                hours_from_start = int((dt - start_time).total_seconds() / 3600)
+                dark = darkness_data[hours_from_start] if 0 <= hours_from_start < len(darkness_data) else {}
                 
-                # Get real CMC seeing/transparency or estimate
+                # Get seeing/transparency
                 if has_cmc_seeing and forecast_hour in cmc_seeing_by_hour:
                     raw_seeing = cmc_seeing_by_hour[forecast_hour]
                     seeing = self.cmc.convert_seeing_value(raw_seeing)
                 else:
-                    # Fallback estimation
                     seeing = self._estimate_seeing(cloud_cover, wind_mph)
                 
                 if has_cmc_transp and forecast_hour in cmc_transp_by_hour:
                     raw_transp = cmc_transp_by_hour[forecast_hour]
                     transparency = self.cmc.convert_transparency_value(raw_transp, cloud_cover)
                 else:
-                    # Fallback estimation
                     transparency = self._estimate_transparency(cloud_cover, humidity, visibility)
                 
-                # If too cloudy, mark seeing/transparency accordingly
                 if cloud_cover is not None and cloud_cover > 90:
                     seeing = "too_cloudy"
                     transparency = "too_cloudy"
                 
-                # Local hour (adjusted for timezone)
-                local_dt = dt + timedelta(hours=location.timezone_offset)
+                # Local hour
+                local_dt = dt + timedelta(hours=tz_offset)
                 
                 hourly_forecast = HourlyForecast(
                     time=dt,
                     hour_local=local_dt.hour,
                     cloud_cover_pct=cloud_cover,
                     cloud_cover_category=self._categorize_cloud(cloud_cover),
-                    ecmwf_cloud_pct=hourly.get("cloud_cover", [None] * len(times))[i],  # Original Open-Meteo value
+                    ecmwf_cloud_pct=hourly.get("cloud_cover", [None] * len(times))[i],
                     ecmwf_cloud_category=self._categorize_cloud(hourly.get("cloud_cover", [None] * len(times))[i]),
                     transparency=transparency,
                     seeing=seeing,
@@ -306,16 +306,19 @@ class ForecastBuilder:
                     wind_direction=wind_dir,
                     humidity_pct=humidity,
                     temperature_f=temp_f,
-                    smoke_ugm3=None,  # Would need separate data source
+                    smoke_ugm3=None,
                     is_connected_block=False
                 )
                 hourly_forecasts.append(hourly_forecast)
+                
+                if len(hourly_forecasts) >= 96:
+                    break
         
-        # If no data available, create placeholder forecasts with just darkness
+        # Placeholder if no data
         if not hourly_forecasts:
             for i, dark in enumerate(darkness_data):
                 dt = start_time + timedelta(hours=i)
-                local_dt = dt + timedelta(hours=location.timezone_offset)
+                local_dt = dt + timedelta(hours=tz_offset)
                 
                 hourly_forecast = HourlyForecast(
                     time=dt,
@@ -327,13 +330,12 @@ class ForecastBuilder:
                 hourly_forecasts.append(hourly_forecast)
         
         # Group into days
-        days = self._group_by_day(hourly_forecasts, location.timezone_offset)
+        days = self._group_by_day(hourly_forecasts, tz_offset)
         
-        # Build model run string
         forecast_run_str = f"{run_datetime.strftime('%Y-%m-%dT%H')}:00:00Z"
         
         return ForecastResponse(
-            location=None,  # Set by router
+            location=None,
             generated_at=datetime.now(timezone.utc),
             forecast_run=forecast_run_str,
             forecast_hours=len(hourly_forecasts),
@@ -342,7 +344,6 @@ class ForecastBuilder:
         )
     
     def _categorize_cloud(self, cloud_pct: Optional[float]) -> Optional[str]:
-        """Categorize cloud cover percentage"""
         if cloud_pct is None:
             return None
         if cloud_pct < 10:
@@ -361,19 +362,12 @@ class ForecastBuilder:
     def _estimate_transparency(self, cloud: Optional[float], 
                                humidity: Optional[float],
                                visibility: Optional[float]) -> Optional[str]:
-        """
-        Estimate transparency from available data
-        
-        Real CMC transparency uses precipitable water vapor.
-        This is a rough approximation.
-        """
         if cloud is not None and cloud > 30:
             return "too_cloudy"
         
         if humidity is None:
             return None
         
-        # Higher humidity = worse transparency
         if humidity > 85:
             return "poor"
         elif humidity > 70:
@@ -387,20 +381,12 @@ class ForecastBuilder:
     
     def _estimate_seeing(self, cloud: Optional[float], 
                          wind_mph: Optional[float]) -> Optional[str]:
-        """
-        Estimate seeing from available data
-        
-        Real CMC seeing uses atmospheric turbulence models.
-        This is a rough approximation based on wind.
-        """
         if cloud is not None and cloud > 80:
             return "too_cloudy"
         
         if wind_mph is None:
             return "average"
         
-        # Higher wind often correlates with worse seeing
-        # But relationship is complex
         if wind_mph > 25:
             return "bad"
         elif wind_mph > 15:
@@ -413,8 +399,7 @@ class ForecastBuilder:
             return "excellent"
     
     def _group_by_day(self, forecasts: List[HourlyForecast], 
-                      tz_offset: int) -> List[DayForecast]:
-        """Group hourly forecasts by local date"""
+                      tz_offset: float) -> List[DayForecast]:
         days_dict: Dict[str, List[HourlyForecast]] = {}
         
         for f in forecasts:
@@ -425,7 +410,6 @@ class ForecastBuilder:
                 days_dict[date_str] = []
             days_dict[date_str].append(f)
         
-        # Convert to list of DayForecast
         days = []
         for date_str in sorted(days_dict.keys()):
             days.append(DayForecast(
@@ -436,5 +420,4 @@ class ForecastBuilder:
         return days
 
 
-# Singleton
 forecast_builder = ForecastBuilder()

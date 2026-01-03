@@ -9,12 +9,14 @@ import About from './components/About'
 import Legal from './components/Legal'
 import Credits from './components/Credits'
 import Danko from './components/Danko'
+import Embed from './components/Embed'
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/danko" element={<Danko />} />
+        <Route path="/embed/:key" element={<Embed />} />
         <Route path="*" element={
           <Layout>
             <Routes>
