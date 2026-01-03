@@ -18,120 +18,127 @@ from .astro_calculator import create_calculator
 logger = logging.getLogger(__name__)
 
 
-# Color scales matching Clear Sky Chart
+# Color scales matching Clear Sky Chart (cleardarksky.com)
 COLOR_SCALES = {
     "cloud_cover": {
         "colors": [
-            {"max": 10, "color": "#0000aa", "label": "Clear"},
-            {"max": 20, "color": "#0033bb", "label": "10% covered"},
-            {"max": 30, "color": "#0066cc", "label": "20% covered"},
-            {"max": 40, "color": "#0099dd", "label": "30% covered"},
-            {"max": 50, "color": "#33aaee", "label": "40% covered"},
-            {"max": 60, "color": "#66bbee", "label": "50% covered"},
-            {"max": 70, "color": "#99ccee", "label": "60% covered"},
-            {"max": 80, "color": "#bbddee", "label": "70% covered"},
-            {"max": 90, "color": "#ddeeff", "label": "80% covered"},
-            {"max": 95, "color": "#eef5ff", "label": "90% covered"},
-            {"max": 100, "color": "#ffffff", "label": "Overcast"},
+            {"max": 5, "color": "#003e7e", "label": "Clear"},
+            {"max": 15, "color": "#135393", "label": "10% covered"},
+            {"max": 25, "color": "#2666a6", "label": "20% covered"},
+            {"max": 35, "color": "#4e8ece", "label": "30% covered"},
+            {"max": 45, "color": "#62a2e2", "label": "40% covered"},
+            {"max": 55, "color": "#76b6f6", "label": "50% covered"},
+            {"max": 65, "color": "#99d9d9", "label": "60% covered"},
+            {"max": 75, "color": "#adeded", "label": "70% covered"},
+            {"max": 85, "color": "#c1c1c1", "label": "80% covered"},
+            {"max": 95, "color": "#e9e9e9", "label": "90% covered"},
+            {"max": 100, "color": "#fafafa", "label": "Overcast"},
         ]
     },
     "transparency": {
         "colors": [
-            {"value": "too_cloudy", "color": "#ffffff", "label": "Too cloudy"},
-            {"value": "poor", "color": "#99bbdd", "label": "Poor"},
-            {"value": "below_avg", "color": "#6699cc", "label": "Below Average"},
-            {"value": "average", "color": "#3377aa", "label": "Average"},
-            {"value": "above_avg", "color": "#115588", "label": "Above Average"},
-            {"value": "transparent", "color": "#003366", "label": "Transparent"},
+            {"value": "too_cloudy", "color": "#f9f9f9", "label": "Too cloudy"},
+            {"value": "poor", "color": "#c7c7c7", "label": "Poor"},
+            {"value": "below_avg", "color": "#95d5d5", "label": "Below Average"},
+            {"value": "average", "color": "#63a3e3", "label": "Average"},
+            {"value": "above_avg", "color": "#2c6cac", "label": "Above Average"},
+            {"value": "transparent", "color": "#003f7f", "label": "Transparent"},
         ]
     },
     "seeing": {
         "colors": [
-            {"value": "too_cloudy", "color": "#ffffff", "label": "Too cloudy"},
-            {"value": "bad", "color": "#cc6666", "label": "Bad 1/5"},
-            {"value": "poor", "color": "#cc9966", "label": "Poor 2/5"},
-            {"value": "average", "color": "#cccc66", "label": "Average 3/5"},
-            {"value": "good", "color": "#99cc66", "label": "Good 4/5"},
-            {"value": "excellent", "color": "#66cc66", "label": "Excellent 5/5"},
+            {"value": "too_cloudy", "color": "#f9f9f9", "label": "Too cloudy"},
+            {"value": "bad", "color": "#c7c7c7", "label": "Bad 1/5"},
+            {"value": "poor", "color": "#95d5d5", "label": "Poor 2/5"},
+            {"value": "average", "color": "#63a3e3", "label": "Average 3/5"},
+            {"value": "good", "color": "#2c6cac", "label": "Good 4/5"},
+            {"value": "excellent", "color": "#003f7f", "label": "Excellent 5/5"},
         ]
     },
     "darkness": {
         "colors": [
-            {"max": -3, "color": "#ffffff", "label": "Daylight"},
-            {"max": -1, "color": "#ffffaa", "label": "Dusk"},
-            {"max": 1, "color": "#aaffff", "label": "Twilight"},
-            {"max": 3, "color": "#aaddff", "label": "Bright Moon"},
-            {"max": 4.5, "color": "#5599dd", "label": "Partial Moon"},
-            {"max": 5.5, "color": "#2266aa", "label": "Dim Moon"},
-            {"max": 7, "color": "#001144", "label": "Dark Sky"},
+            {"max": -3.5, "color": "#ffffff", "label": "Daylight"},
+            {"max": -2.5, "color": "#fff1d8", "label": "Bright"},
+            {"max": -1.5, "color": "#ffe3b1", "label": "Bright"},
+            {"max": -0.5, "color": "#ffd58a", "label": "Dusk"},
+            {"max": 0.5, "color": "#ffc662", "label": "Dusk"},
+            {"max": 1.5, "color": "#ffb83b", "label": "Twilight"},
+            {"max": 2.5, "color": "#ffaa14", "label": "Twilight"},
+            {"max": 3.25, "color": "#00ffff", "label": "Bright Moon"},
+            {"max": 3.75, "color": "#00cbff", "label": "Bright Moon"},
+            {"max": 4.25, "color": "#0096ff", "label": "Partial Moon"},
+            {"max": 4.75, "color": "#0064e4", "label": "Partial Moon"},
+            {"max": 5.25, "color": "#0032ca", "label": "Dim Moon"},
+            {"max": 5.75, "color": "#0000af", "label": "Dim Moon"},
+            {"max": 6.25, "color": "#000042", "label": "Dark Sky"},
+            {"max": 7, "color": "#00004b", "label": "Dark Sky"},
         ]
     },
     "wind": {
         "colors": [
-            {"max": 5, "color": "#004400", "label": "0-5 mph"},
-            {"max": 11, "color": "#006600", "label": "6-11 mph"},
-            {"max": 16, "color": "#228822", "label": "12-16 mph"},
-            {"max": 28, "color": "#66aa66", "label": "17-28 mph"},
-            {"max": 45, "color": "#aacc88", "label": "29-45 mph"},
-            {"max": 999, "color": "#ddddaa", "label": ">45 mph"},
+            {"max": 5, "color": "#003f7f", "label": "0-5 mph"},
+            {"max": 11, "color": "#2c6cac", "label": "6-11 mph"},
+            {"max": 16, "color": "#63a3e3", "label": "12-16 mph"},
+            {"max": 28, "color": "#95d5d5", "label": "17-28 mph"},
+            {"max": 45, "color": "#c7c7c7", "label": "29-45 mph"},
+            {"max": 999, "color": "#f9f9f9", "label": ">45 mph"},
         ]
     },
     "humidity": {
         "colors": [
-            {"max": 25, "color": "#663300", "label": "<25%"},
-            {"max": 30, "color": "#774411", "label": "25-30%"},
-            {"max": 35, "color": "#885522", "label": "30-35%"},
-            {"max": 40, "color": "#996633", "label": "35-40%"},
-            {"max": 45, "color": "#aa7744", "label": "40-45%"},
-            {"max": 50, "color": "#bb8855", "label": "45-50%"},
-            {"max": 55, "color": "#cc9966", "label": "50-55%"},
-            {"max": 60, "color": "#ddaa77", "label": "55-60%"},
-            {"max": 65, "color": "#eebb88", "label": "60-65%"},
-            {"max": 70, "color": "#ffcc99", "label": "65-70%"},
-            {"max": 75, "color": "#ffddaa", "label": "70-75%"},
-            {"max": 80, "color": "#ffeebb", "label": "75-80%"},
-            {"max": 85, "color": "#ffffcc", "label": "80-85%"},
-            {"max": 90, "color": "#eeffdd", "label": "85-90%"},
-            {"max": 95, "color": "#ddfff0", "label": "90-95%"},
-            {"max": 100, "color": "#ccffff", "label": "95-100%"},
+            {"max": 25, "color": "#08035d", "label": "<25%"},
+            {"max": 30, "color": "#0d4d8d", "label": "25-30%"},
+            {"max": 35, "color": "#3070b0", "label": "30-35%"},
+            {"max": 40, "color": "#4e8ece", "label": "35-40%"},
+            {"max": 45, "color": "#71b1f1", "label": "40-45%"},
+            {"max": 50, "color": "#80c0c0", "label": "45-50%"},
+            {"max": 55, "color": "#09feed", "label": "50-55%"},
+            {"max": 60, "color": "#55faad", "label": "55-60%"},
+            {"max": 65, "color": "#94fe6a", "label": "60-65%"},
+            {"max": 70, "color": "#eafb16", "label": "65-70%"},
+            {"max": 75, "color": "#fec600", "label": "70-75%"},
+            {"max": 80, "color": "#fc8602", "label": "75-80%"},
+            {"max": 85, "color": "#fe3401", "label": "80-85%"},
+            {"max": 90, "color": "#ea0000", "label": "85-90%"},
+            {"max": 95, "color": "#b70000", "label": "90-95%"},
+            {"max": 100, "color": "#e10000", "label": "95-100%"},
         ]
     },
     "temperature": {
         "colors": [
-            {"max": -40, "color": "#4400aa", "label": "< -40°F"},
-            {"max": -31, "color": "#5500bb", "label": "-40 to -31°F"},
-            {"max": -21, "color": "#6600cc", "label": "-30 to -21°F"},
-            {"max": -12, "color": "#7722dd", "label": "-21 to -12°F"},
-            {"max": -3, "color": "#8844ee", "label": "-12 to -3°F"},
-            {"max": 5, "color": "#9966ff", "label": "-3 to 5°F"},
-            {"max": 14, "color": "#aa88ff", "label": "5 to 14°F"},
-            {"max": 23, "color": "#aaaaff", "label": "14 to 23°F"},
-            {"max": 32, "color": "#88ccff", "label": "23 to 32°F"},
-            {"max": 41, "color": "#66eeff", "label": "32 to 41°F"},
-            {"max": 50, "color": "#44ffcc", "label": "41 to 50°F"},
-            {"max": 59, "color": "#66ff99", "label": "50 to 59°F"},
-            {"max": 68, "color": "#88ff66", "label": "59 to 68°F"},
-            {"max": 77, "color": "#aaff44", "label": "68 to 77°F"},
-            {"max": 86, "color": "#ccff22", "label": "77 to 86°F"},
-            {"max": 95, "color": "#ffcc00", "label": "86 to 95°F"},
-            {"max": 104, "color": "#ff9900", "label": "95 to 104°F"},
-            {"max": 113, "color": "#ff6600", "label": "104 to 113°F"},
-            {"max": 999, "color": "#ff3300", "label": ">113°F"},
+            {"max": -40, "color": "#fc00fc", "label": "< -40°F"},
+            {"max": -31, "color": "#000085", "label": "-40 to -31°F"},
+            {"max": -21, "color": "#0000b2", "label": "-30 to -21°F"},
+            {"max": -12, "color": "#0000ec", "label": "-21 to -12°F"},
+            {"max": -3, "color": "#0034fe", "label": "-12 to -3°F"},
+            {"max": 5, "color": "#0089fe", "label": "-3 to 5°F"},
+            {"max": 14, "color": "#00d4fe", "label": "5 to 14°F"},
+            {"max": 23, "color": "#1efede", "label": "14 to 23°F"},
+            {"max": 32, "color": "#fbfbfb", "label": "23 to 32°F"},
+            {"max": 41, "color": "#5efe9e", "label": "32 to 41°F"},
+            {"max": 50, "color": "#a2fe5a", "label": "41 to 50°F"},
+            {"max": 59, "color": "#fede00", "label": "50 to 59°F"},
+            {"max": 68, "color": "#fe9e00", "label": "59 to 68°F"},
+            {"max": 77, "color": "#fe5a00", "label": "68 to 77°F"},
+            {"max": 86, "color": "#fe1e00", "label": "77 to 86°F"},
+            {"max": 95, "color": "#e20000", "label": "86 to 95°F"},
+            {"max": 104, "color": "#a90000", "label": "95 to 104°F"},
+            {"max": 113, "color": "#7e0000", "label": "104 to 113°F"},
+            {"max": 999, "color": "#c6c6c6", "label": ">113°F"},
         ]
     },
     "smoke": {
         "colors": [
-            {"max": 1, "color": "#004488", "label": "No Smoke"},
-            {"max": 2, "color": "#226699", "label": "2 µg/m³"},
-            {"max": 5, "color": "#4488aa", "label": "5 µg/m³"},
-            {"max": 10, "color": "#66aabb", "label": "10 µg/m³"},
-            {"max": 20, "color": "#88bbcc", "label": "20 µg/m³"},
-            {"max": 40, "color": "#ffaaaa", "label": "40 µg/m³"},
-            {"max": 60, "color": "#ff8888", "label": "60 µg/m³"},
-            {"max": 80, "color": "#ff6666", "label": "80 µg/m³"},
-            {"max": 100, "color": "#ff4444", "label": "100 µg/m³"},
-            {"max": 200, "color": "#cc3333", "label": "200 µg/m³"},
-            {"max": 999, "color": "#884422", "label": ">500 µg/m³"},
+            {"max": 2, "color": "#003f7f", "label": "No Smoke"},
+            {"max": 5, "color": "#4f8fcf", "label": "5 µg/m³"},
+            {"max": 10, "color": "#78bec8", "label": "10 µg/m³"},
+            {"max": 20, "color": "#87d2c1", "label": "20 µg/m³"},
+            {"max": 40, "color": "#d68f87", "label": "40 µg/m³"},
+            {"max": 60, "color": "#c96459", "label": "60 µg/m³"},
+            {"max": 80, "color": "#bd3b2d", "label": "80 µg/m³"},
+            {"max": 100, "color": "#b51504", "label": "100 µg/m³"},
+            {"max": 200, "color": "#654321", "label": "200 µg/m³"},
+            {"max": 999, "color": "#37220f", "label": ">500 µg/m³"},
         ]
     }
 }
@@ -159,24 +166,19 @@ class ForecastBuilder:
         elif hasattr(location, 'tz_offset'):
             tz_offset = location.tz_offset
         else:
-            tz_offset = 0  # fallback to UTC
+            tz_offset = 0
         
-        
-        # Get current time and round to nearest hour
         now = datetime.now(timezone.utc)
         start_time = now.replace(minute=0, second=0, microsecond=0)
         
-        # Create astro calculator for this location
         astro = create_calculator(
             location.latitude, 
             location.longitude,
             location.elevation or 0
         )
         
-        # Get latest model run
         model_run, run_datetime = self.cmc.get_latest_model_run()
         
-        # Try to get CMC data if GRIB parsing is available
         cmc_data = None
         if self.cmc._grib_available:
             cache_key = f"{location.latitude:.2f}_{location.longitude:.2f}"
@@ -193,20 +195,23 @@ class ForecastBuilder:
                     self.cmc.save_cached_forecast(cache_key, model_run, cmc_data)
                     logger.info(f"Cached CMC data for {location.name}")
         
-        # Fetch Open-Meteo for weather data
         openmeteo_data = await self.openmeteo.fetch_forecast(
             location.latitude,
             location.longitude,
             forecast_days=7
         )
         
-        # Calculate darkness for all hours
+        # Fetch air quality for smoke
+        air_quality = await self.openmeteo.fetch_air_quality(
+            location.latitude,
+            location.longitude,
+            forecast_days=4
+        )
+        
         darkness_data = astro.calculate_hourly_darkness(start_time, hours=96)
         
-        # Build hourly forecasts
         hourly_forecasts = []
         
-        # Index CMC data by forecast hour
         cmc_seeing_by_hour = {}
         cmc_transp_by_hour = {}
         cmc_cloud_by_hour = {}
@@ -235,7 +240,6 @@ class ForecastBuilder:
             times = hourly.get("time", [])
             
             for i, time_str in enumerate(times[:168]):
-                # Parse time
                 try:
                     dt = datetime.fromisoformat(time_str.replace('Z', '+00:00'))
                     if dt.tzinfo is None:
@@ -243,13 +247,11 @@ class ForecastBuilder:
                 except:
                     dt = start_time + timedelta(hours=i)
                 
-                # Skip past hours
                 if dt < start_time:
                     continue
                 
                 forecast_hour = i + 1
                 
-                # Get values from Open-Meteo
                 cloud_cover = hourly.get("cloud_cover", [None] * len(times))[i]
                 temp_c = hourly.get("temperature_2m", [None] * len(times))[i]
                 humidity = hourly.get("relative_humidity_2m", [None] * len(times))[i]
@@ -257,20 +259,16 @@ class ForecastBuilder:
                 wind_dir = hourly.get("wind_direction_10m", [None] * len(times))[i]
                 visibility = hourly.get("visibility", [None] * len(times))[i]
                 
-                # Use CMC cloud if available
                 cmc_cloud = cmc_cloud_by_hour.get(forecast_hour)
                 if cmc_cloud is not None:
                     cloud_cover = cmc_cloud
                 
-                # Convert units
                 temp_f = (temp_c * 9/5 + 32) if temp_c is not None else None
                 wind_mph = (wind_speed * 0.621371) if wind_speed is not None else None
                 
-                # Get darkness data
                 hours_from_start = int((dt - start_time).total_seconds() / 3600)
                 dark = darkness_data[hours_from_start] if 0 <= hours_from_start < len(darkness_data) else {}
                 
-                # Get seeing/transparency
                 if has_cmc_seeing and forecast_hour in cmc_seeing_by_hour:
                     raw_seeing = cmc_seeing_by_hour[forecast_hour]
                     seeing = self.cmc.convert_seeing_value(raw_seeing)
@@ -287,7 +285,14 @@ class ForecastBuilder:
                     seeing = "too_cloudy"
                     transparency = "too_cloudy"
                 
-                # Local hour
+                # Get smoke (PM2.5)
+                smoke = None
+                if air_quality.get("available"):
+                    aq_hourly = air_quality.get("hourly", {})
+                    pm25_list = aq_hourly.get("pm2_5", [])
+                    if i < len(pm25_list):
+                        smoke = pm25_list[i]
+                
                 local_dt = dt + timedelta(hours=tz_offset)
                 
                 hourly_forecast = HourlyForecast(
@@ -306,7 +311,7 @@ class ForecastBuilder:
                     wind_direction=wind_dir,
                     humidity_pct=humidity,
                     temperature_f=temp_f,
-                    smoke_ugm3=None,
+                    smoke_ugm3=smoke,
                     is_connected_block=False
                 )
                 hourly_forecasts.append(hourly_forecast)
@@ -314,7 +319,6 @@ class ForecastBuilder:
                 if len(hourly_forecasts) >= 96:
                     break
         
-        # Placeholder if no data
         if not hourly_forecasts:
             for i, dark in enumerate(darkness_data):
                 dt = start_time + timedelta(hours=i)
@@ -329,7 +333,6 @@ class ForecastBuilder:
                 )
                 hourly_forecasts.append(hourly_forecast)
         
-        # Group into days
         days = self._group_by_day(hourly_forecasts, tz_offset)
         
         forecast_run_str = f"{run_datetime.strftime('%Y-%m-%dT%H')}:00:00Z"
@@ -385,18 +388,16 @@ class ForecastBuilder:
             return "too_cloudy"
         
         if wind_mph is None:
-            return "average"
-        
-        if wind_mph > 25:
-            return "bad"
-        elif wind_mph > 15:
             return "poor"
-        elif wind_mph > 8:
+        
+        if wind_mph > 20:
+            return "bad"
+        elif wind_mph > 12:
+            return "poor"
+        elif wind_mph > 6:
             return "average"
-        elif wind_mph > 3:
-            return "good"
         else:
-            return "excellent"
+            return "good"
     
     def _group_by_day(self, forecasts: List[HourlyForecast], 
                       tz_offset: float) -> List[DayForecast]:

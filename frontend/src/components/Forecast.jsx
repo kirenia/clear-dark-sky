@@ -4,80 +4,111 @@ import { API_URL } from '../config';
 import './Home.css';
 import './Forecast.css';
 
-// Color scales
 const COLORS = {
   cloud: [
-    { max: 10, color: '#004080', label: 'Clear' },
-    { max: 20, color: '#0050a0', label: '10%' },
-    { max: 30, color: '#0060b8', label: '20%' },
-    { max: 40, color: '#2070c0', label: '30%' },
-    { max: 50, color: '#4084c8', label: '40%' },
-    { max: 60, color: '#6098d0', label: '50%' },
-    { max: 70, color: '#80acd8', label: '60%' },
-    { max: 80, color: '#a0c0e0', label: '70%' },
-    { max: 90, color: '#c0d4e8', label: '80%' },
-    { max: 100, color: '#e0e8f0', label: '90%' },
-    { max: 101, color: '#ffffff', label: 'Overcast' }
+    { max: 5, color: '#003e7e', label: 'Clear' },
+    { max: 15, color: '#135393', label: '10%' },
+    { max: 25, color: '#2666a6', label: '20%' },
+    { max: 35, color: '#4e8ece', label: '30%' },
+    { max: 45, color: '#62a2e2', label: '40%' },
+    { max: 55, color: '#76b6f6', label: '50%' },
+    { max: 65, color: '#99d9d9', label: '60%' },
+    { max: 75, color: '#adeded', label: '70%' },
+    { max: 85, color: '#c1c1c1', label: '80%' },
+    { max: 95, color: '#e9e9e9', label: '90%' },
+    { max: 101, color: '#fafafa', label: 'Overcast' }
   ],
   transparency: [
-    { value: 'too_cloudy', color: '#ffffff', label: 'Too Cloudy' },
-    { value: 'poor', color: '#c0a080', label: 'Poor' },
-    { value: 'below_avg', color: '#90b090', label: 'Below Avg' },
-    { value: 'average', color: '#60c0a0', label: 'Average' },
-    { value: 'above_avg', color: '#40d0b0', label: 'Above Avg' },
-    { value: 'transparent', color: '#20e0c0', label: 'Transparent' }
+    { value: 'too_cloudy', color: '#f9f9f9', label: 'Too Cloudy' },
+    { value: 'poor', color: '#c7c7c7', label: 'Poor' },
+    { value: 'below_avg', color: '#95d5d5', label: 'Below Avg' },
+    { value: 'average', color: '#63a3e3', label: 'Average' },
+    { value: 'above_avg', color: '#2c6cac', label: 'Above Avg' },
+    { value: 'transparent', color: '#003f7f', label: 'Transparent' }
   ],
   seeing: [
-    { value: 'too_cloudy', color: '#ffffff', label: 'Too Cloudy' },
-    { value: 'bad', color: '#e04040', label: 'Bad 1/5' },
-    { value: 'poor', color: '#e08040', label: 'Poor 2/5' },
-    { value: 'average', color: '#e0c040', label: 'Average 3/5' },
-    { value: 'good', color: '#80c040', label: 'Good 4/5' },
-    { value: 'excellent', color: '#40a040', label: 'Excellent 5/5' }
+    { value: 'too_cloudy', color: '#f9f9f9', label: 'Too Cloudy' },
+    { value: 'bad', color: '#c7c7c7', label: 'Bad 1/5' },
+    { value: 'poor', color: '#95d5d5', label: 'Poor 2/5' },
+    { value: 'average', color: '#63a3e3', label: 'Average 3/5' },
+    { value: 'good', color: '#2c6cac', label: 'Good 4/5' },
+    { value: 'excellent', color: '#003f7f', label: 'Excellent 5/5' }
   ],
   darkness: [
-    { max: 0.5, color: '#ffffff', label: 'Day' },
-    { max: 1.5, color: '#ffe080', label: 'Dusk' },
-    { max: 2.5, color: '#40e0d0', label: 'Twilight' },
-    { max: 4.0, color: '#80c0e0', label: 'Full Moon' },
-    { max: 5.5, color: '#4080c0', label: 'Partial Moon' },
-    { max: 7.0, color: '#000020', label: 'Dark' }
+    { max: -3.5, color: '#ffffff', label: 'Day' },
+    { max: -2.5, color: '#fff1d8', label: 'Bright' },
+    { max: -1.5, color: '#ffe3b1', label: 'Bright' },
+    { max: -0.5, color: '#ffd58a', label: 'Dusk' },
+    { max: 0.5, color: '#ffc662', label: 'Dusk' },
+    { max: 1.5, color: '#ffb83b', label: 'Twilight' },
+    { max: 2.5, color: '#ffaa14', label: 'Twilight' },
+    { max: 3.25, color: '#00ffff', label: 'Bright Moon' },
+    { max: 3.75, color: '#00cbff', label: 'Bright Moon' },
+    { max: 4.25, color: '#0096ff', label: 'Partial Moon' },
+    { max: 4.75, color: '#0064e4', label: 'Partial Moon' },
+    { max: 5.25, color: '#0032ca', label: 'Dim Moon' },
+    { max: 5.75, color: '#0000af', label: 'Dim Moon' },
+    { max: 6.25, color: '#000042', label: 'Dark' },
+    { max: 7.0, color: '#00004b', label: 'Dark' }
   ],
   smoke: [
-    { max: 1, color: '#e0f0ff', label: 'None' },
-    { max: 5, color: '#c0e0f0', label: '2 µg/m³' },
-    { max: 10, color: '#a0d0e0', label: '5' },
-    { max: 20, color: '#80c0d0', label: '10' },
-    { max: 40, color: '#c0a080', label: '20' },
-    { max: 60, color: '#e08060', label: '40' },
-    { max: 80, color: '#e04040', label: '60' },
-    { max: 100, color: '#c02020', label: '80' },
-    { max: 200, color: '#a00000', label: '100' },
-    { max: 1000, color: '#600000', label: '200+' }
+    { max: 2, color: '#003f7f', label: 'None' },
+    { max: 5, color: '#4f8fcf', label: '5 µg/m³' },
+    { max: 10, color: '#78bec8', label: '10' },
+    { max: 20, color: '#87d2c1', label: '20' },
+    { max: 40, color: '#d68f87', label: '40' },
+    { max: 60, color: '#c96459', label: '60' },
+    { max: 80, color: '#bd3b2d', label: '80' },
+    { max: 100, color: '#b51504', label: '100' },
+    { max: 200, color: '#654321', label: '200' },
+    { max: 1000, color: '#37220f', label: '500+' }
   ],
   wind: [
-    { max: 5, color: '#40a0c0', label: '0-5 mph' },
-    { max: 11, color: '#80c0a0', label: '6-11' },
-    { max: 16, color: '#c0e080', label: '12-16' },
-    { max: 28, color: '#ffc040', label: '17-28' },
-    { max: 45, color: '#ff8040', label: '29-45' },
-    { max: 200, color: '#ff4040', label: '>45 mph' }
+    { max: 5, color: '#003f7f', label: '0-5 mph' },
+    { max: 11, color: '#2c6cac', label: '6-11' },
+    { max: 16, color: '#63a3e3', label: '12-16' },
+    { max: 28, color: '#95d5d5', label: '17-28' },
+    { max: 45, color: '#c7c7c7', label: '29-45' },
+    { max: 200, color: '#f9f9f9', label: '>45 mph' }
   ],
   humidity: [
-    { max: 25, color: '#ffe0c0', label: '<25%' },
-    { max: 40, color: '#e0d0a0', label: '25-40%' },
-    { max: 55, color: '#c0d0a0', label: '40-55%' },
-    { max: 70, color: '#a0d0c0', label: '55-70%' },
-    { max: 85, color: '#80c0e0', label: '70-85%' },
-    { max: 100, color: '#60a0e0', label: '85%+' }
+    { max: 25, color: '#08035d', label: '<25%' },
+    { max: 30, color: '#0d4d8d', label: '25-30%' },
+    { max: 35, color: '#3070b0', label: '30-35%' },
+    { max: 40, color: '#4e8ece', label: '35-40%' },
+    { max: 45, color: '#71b1f1', label: '40-45%' },
+    { max: 50, color: '#80c0c0', label: '45-50%' },
+    { max: 55, color: '#09feed', label: '50-55%' },
+    { max: 60, color: '#55faad', label: '55-60%' },
+    { max: 65, color: '#94fe6a', label: '60-65%' },
+    { max: 70, color: '#eafb16', label: '65-70%' },
+    { max: 75, color: '#fec600', label: '70-75%' },
+    { max: 80, color: '#fc8602', label: '75-80%' },
+    { max: 85, color: '#fe3401', label: '80-85%' },
+    { max: 90, color: '#ea0000', label: '85-90%' },
+    { max: 95, color: '#b70000', label: '90-95%' },
+    { max: 100, color: '#e10000', label: '95%+' }
   ],
   temperature: [
-    { max: 32, color: '#0080ff', label: '<32°F' },
-    { max: 50, color: '#00c0c0', label: '32-50°F' },
-    { max: 68, color: '#40c040', label: '50-68°F' },
-    { max: 86, color: '#c0c000', label: '68-86°F' },
-    { max: 104, color: '#ff8000', label: '86-104°F' },
-    { max: 200, color: '#ff0000', label: '>104°F' }
+    { max: -40, color: '#fc00fc', label: '< -40°F' },
+    { max: -31, color: '#000085', label: '-40 to -31°F' },
+    { max: -21, color: '#0000b2', label: '-30 to -21°F' },
+    { max: -12, color: '#0000ec', label: '-21 to -12°F' },
+    { max: -3, color: '#0034fe', label: '-12 to -3°F' },
+    { max: 5, color: '#0089fe', label: '-3 to 5°F' },
+    { max: 14, color: '#00d4fe', label: '5 to 14°F' },
+    { max: 23, color: '#1efede', label: '14 to 23°F' },
+    { max: 32, color: '#fbfbfb', label: '23 to 32°F' },
+    { max: 41, color: '#5efe9e', label: '32 to 41°F' },
+    { max: 50, color: '#a2fe5a', label: '41 to 50°F' },
+    { max: 59, color: '#fede00', label: '50 to 59°F' },
+    { max: 68, color: '#fe9e00', label: '59 to 68°F' },
+    { max: 77, color: '#fe5a00', label: '68 to 77°F' },
+    { max: 86, color: '#fe1e00', label: '77 to 86°F' },
+    { max: 95, color: '#e20000', label: '86 to 95°F' },
+    { max: 104, color: '#a90000', label: '95 to 104°F' },
+    { max: 113, color: '#7e0000', label: '104 to 113°F' },
+    { max: 200, color: '#c6c6c6', label: '>113°F' }
   ]
 };
 
@@ -87,13 +118,11 @@ function getColor(value, scale, type = 'range') {
     return nullEntry ? nullEntry.color : '#ffffff';
   }
   
-  // For scales with 'value' (exact match by string)
   if (type === 'value' || scale[0]?.value !== undefined) {
     const entry = scale.find(s => s.value === value);
     return entry ? entry.color : '#ffffff';
   }
   
-  // For scales with 'max' (range)
   for (const entry of scale) {
     if (value <= entry.max) {
       return entry.color;
@@ -102,10 +131,35 @@ function getColor(value, scale, type = 'range') {
   return scale[scale.length - 1].color;
 }
 
-function formatHour(hour) {
-  const top = Math.floor(hour / 10);
-  const bottom = hour % 10;
-  return { top: top || '', bottom };
+function groupHoursByLocalDate(allHours) {
+  const groups = [];
+  let currentGroup = null;
+  
+  allHours.forEach((hour, i) => {
+    const utcDate = new Date(hour.time);
+    const localDate = new Date(utcDate.getTime());
+    if (hour.hour_local > utcDate.getUTCHours()) {
+      localDate.setUTCDate(localDate.getUTCDate() - 1);
+    } else if (hour.hour_local < utcDate.getUTCHours() - 12) {
+      localDate.setUTCDate(localDate.getUTCDate() + 1);
+    }
+    
+    const dateKey = `${localDate.getUTCFullYear()}-${String(localDate.getUTCMonth() + 1).padStart(2, '0')}-${String(localDate.getUTCDate()).padStart(2, '0')}`;
+    
+    if (!currentGroup || currentGroup.dateKey !== dateKey) {
+      currentGroup = {
+        dateKey,
+        date: localDate,
+        startIndex: i,
+        count: 1
+      };
+      groups.push(currentGroup);
+    } else {
+      currentGroup.count++;
+    }
+  });
+  
+  return groups;
 }
 
 function Forecast() {
@@ -151,8 +205,8 @@ function Forecast() {
     );
   }
 
-  // Flatten hours from days
   const allHours = forecast.days.flatMap(day => day.hours);
+  const dayGroups = groupHoursByLocalDate(allHours);
 
   const rows = [
     { key: 'cloud_cover_pct', label: 'Cloud Cover', scale: COLORS.cloud, type: 'range' },
@@ -190,48 +244,57 @@ function Forecast() {
         <div className="chart-updated">
           Forecast run: {forecast.forecast_run}
         </div>
-
-        <div className="chart-controls">
-          <h3>Chart Controls</h3>
-          <ul>
-            <li>Hold your mouse over a block to explain color and details.</li>
-            <li>Click on a forecast block to show full forecast map</li>
-          </ul>
-        </div>
         
         <div className="forecast-chart">
-          {/* Time header */}
-          <div className="chart-row chart-row--header">
-            <div className="chart-label"></div>
-            <div className="chart-cells">
-              {allHours.map((hour, i) => {
-                const { top, bottom } = formatHour(hour.hour_local);
-                const prevHour = i > 0 ? allHours[i-1] : null;
-                const isNewDay = !prevHour || 
-                  new Date(hour.time).getDate() !== new Date(prevHour.time).getDate();
-                return (
-                  <div key={i} className={`chart-cell chart-cell--time ${isNewDay ? 'chart-cell--new-day' : ''}`}>
-                    <span className="time-top">{top}</span>
-                    <span className="time-bottom">{bottom}</span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
 
-          {/* Date header */}
+          {/* Date header row */}
           <div className="chart-row chart-row--dates">
             <div className="chart-label"></div>
             <div className="chart-cells">
-              {forecast.days.map((day, i) => (
-                <div 
-                  key={i} 
-                  className="chart-date-span"
-                  style={{ width: `${(day.hours.length / allHours.length) * 100}%` }}
-                >
-                  {new Date(day.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
-                </div>
-              ))}
+              {allHours.map((hour, i) => {
+                // Find which day group this hour belongs to
+                const group = dayGroups.find(g => i >= g.startIndex && i < g.startIndex + g.count);
+                const isFirstOfDay = group && i === group.startIndex;
+                const isMidnight = hour.hour_local === 0 && i > 0;
+                
+                if (isFirstOfDay) {
+                  const weekday = group.date.toLocaleDateString('en-US', { weekday: 'short', timeZone: 'UTC' });
+                  const dayNum = group.date.getUTCDate();
+                  // Calculate width: cells are 10px + 1px gap each, minus last gap
+                  const spanWidth = (group.count * 11) - 1;
+                  return (
+                    <div 
+                      key={i}
+                      className={`chart-date-span ${isMidnight ? 'chart-date-span--midnight' : ''}`}
+                      style={{ width: `${spanWidth}px` }}
+                    >
+                      {weekday}, {dayNum}
+                    </div>
+                  );
+                }
+                return null;
+              }).filter(Boolean)}
+            </div>
+          </div>
+
+          {/* Time header - stacked digits */}
+          <div className="chart-row chart-row--time">
+            <div className="chart-label"></div>
+            <div className="chart-cells">
+              {allHours.map((hour, i) => {
+                const tens = Math.floor(hour.hour_local / 10);
+                const ones = hour.hour_local % 10;
+                const isMidnight = hour.hour_local === 0 && i > 0;
+                return (
+                  <div 
+                    key={i} 
+                    className={`chart-cell chart-cell--time ${isMidnight ? 'chart-cell--midnight' : ''}`}
+                  >
+                    <span className="time-tens">{tens}</span>
+                    <span className="time-ones">{ones}</span>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
@@ -240,14 +303,17 @@ function Forecast() {
             <div key={row.key} className="chart-row">
               <div className="chart-label">{row.label}</div>
               <div className="chart-cells">
-                {allHours.map((hour, i) => (
-                  <div
-                    key={i}
-                    className="chart-cell"
-                    style={{ backgroundColor: getColor(hour[row.key], row.scale, row.type) }}
-                    title={`${row.label}: ${hour[row.key] ?? 'N/A'}`}
-                  />
-                ))}
+                {allHours.map((hour, i) => {
+                  const isMidnight = hour.hour_local === 0 && i > 0;
+                  return (
+                    <div
+                      key={i}
+                      className={`chart-cell chart-cell--data ${isMidnight ? 'chart-cell--midnight' : ''}`}
+                      style={{ backgroundColor: getColor(hour[row.key], row.scale, row.type) }}
+                      title={`${row.label}: ${hour[row.key] ?? 'N/A'}`}
+                    />
+                  );
+                })}
               </div>
             </div>
           ))}
@@ -255,26 +321,99 @@ function Forecast() {
       </div>
 
       <div className="chart-legend">
-        <h3>Legend</h3>
-        <div className="legend-grid">
-          {rows.slice(0, 4).map(row => (
-            <div key={row.key} className="legend-row">
-              <strong>{row.label}</strong>
-              <div className="legend-scale">
-                {row.scale.filter(s => s.value !== 'too_cloudy').slice(0, 6).map((s, i) => (
-                  <div key={i} className="legend-item">
-                    <span className="legend-color" style={{ backgroundColor: s.color }}></span>
-                    <span className="legend-label">{s.label}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-        <p className="legend-link">
-          <Link to="/docs">Full guide to reading charts →</Link>
-        </p>
-      </div>
+  <h3>Legend</h3>
+  
+  <div className="legend-section">
+    <div className="legend-section-title">Cloud Cover</div>
+    <div className="legend-items">
+      {COLORS.cloud.map((c, i) => (
+        <span key={i} className="legend-block" style={{ backgroundColor: c.color }}>
+          <span className={`legend-text ${i < 4 ? 'light' : 'dark'}`}>{c.label}</span>
+        </span>
+      ))}
+    </div>
+  </div>
+
+  <div className="legend-section">
+    <div className="legend-section-title">Transparency</div>
+    <div className="legend-items">
+      {COLORS.transparency.map((c, i) => (
+        <span key={i} className="legend-block" style={{ backgroundColor: c.color }}>
+          <span className={`legend-text ${i < 3 ? 'dark' : 'light'}`}>{c.label}</span>
+        </span>
+      ))}
+    </div>
+  </div>
+
+  <div className="legend-section">
+    <div className="legend-section-title">Seeing</div>
+    <div className="legend-items">
+      {COLORS.seeing.map((c, i) => (
+        <span key={i} className="legend-block" style={{ backgroundColor: c.color }}>
+          <span className={`legend-text ${i < 3 ? 'dark' : 'light'}`}>{c.label}</span>
+        </span>
+      ))}
+    </div>
+  </div>
+
+  <div className="legend-section">
+    <div className="legend-section-title">Darkness</div>
+    <div className="legend-items">
+      {COLORS.darkness.filter((_, i) => i % 2 === 0).map((c, i) => (
+        <span key={i} className="legend-block" style={{ backgroundColor: c.color }}>
+          <span className={`legend-text ${c.max < 3 ? 'dark' : 'light'}`}>{c.label}</span>
+        </span>
+      ))}
+    </div>
+  </div>
+
+  <div className="legend-section">
+    <div className="legend-section-title">Smoke</div>
+    <div className="legend-items">
+      {COLORS.smoke.map((c, i) => (
+        <span key={i} className="legend-block" style={{ backgroundColor: c.color }}>
+          <span className={`legend-text ${i < 4 ? 'light' : i < 7 ? 'dark' : 'light'}`}>{c.label}</span>
+        </span>
+      ))}
+    </div>
+  </div>
+
+  <div className="legend-section">
+    <div className="legend-section-title">Wind</div>
+    <div className="legend-items">
+      {COLORS.wind.map((c, i) => (
+        <span key={i} className="legend-block" style={{ backgroundColor: c.color }}>
+          <span className={`legend-text ${i < 3 ? 'light' : 'dark'}`}>{c.label}</span>
+        </span>
+      ))}
+    </div>
+  </div>
+
+  <div className="legend-section">
+    <div className="legend-section-title">Humidity</div>
+    <div className="legend-items">
+      {COLORS.humidity.map((c, i) => (
+        <span key={i} className="legend-block" style={{ backgroundColor: c.color }}>
+          <span className={`legend-text ${i < 3 ? 'light' : 'dark'}`}>{c.label}</span>
+        </span>
+      ))}
+    </div>
+  </div>
+
+  <div className="legend-section">
+    <div className="legend-section-title">Temperature</div>
+    <div className="legend-items">
+      {COLORS.temperature.map((c, i) => (
+        <span key={i} className="legend-block" style={{ backgroundColor: c.color }}>
+          <span className={`legend-text ${i < 6 || i > 14 ? 'light' : 'dark'}`}>{c.label}</span>
+        </span>
+      ))}
+    </div>
+  </div>
+</div>
+<p className="legend-link">
+  <Link to="/docs">Full guide to reading charts →</Link>
+</p>
 
       <div className="chart-links">
         <h3>Useful Links</h3>

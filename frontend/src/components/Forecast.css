@@ -1,5 +1,5 @@
 .forecast {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 1rem;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -66,7 +66,7 @@
 
 /* Chart Container */
 .chart-container {
-  background: var(--color-bg-alt);
+  background: #0d1117;
   border: 1px solid var(--color-border);
   border-radius: 8px;
   padding: 1rem;
@@ -97,7 +97,7 @@
   color: var(--color-text);
 }
 
-.chart-controls ol {
+.chart-controls ul {
   margin: 0;
   padding-left: 1.25rem;
 }
@@ -111,111 +111,119 @@
   margin-bottom: 0;
 }
 
-.chart-controls input[type="checkbox"] {
-  margin-left: 0.5rem;
-  vertical-align: middle;
-}
-
 /* Forecast Chart */
 .forecast-chart {
   min-width: 800px;
+  background: #0d1117;
 }
 
+/* Row layout */
 .chart-row {
   display: flex;
   align-items: stretch;
-  border-bottom: 1px solid var(--color-border-light);
-}
-
-.chart-row:last-child {
-  border-bottom: none;
-}
-
-.chart-row--header {
-  border-bottom: 2px solid var(--color-border);
-}
-
-.chart-row--dates {
-  background: var(--color-bg-elevated);
-  border-bottom: 1px solid var(--color-border);
 }
 
 .chart-label {
-  width: 100px;
-  min-width: 100px;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--color-text);
+  width: 90px;
+  min-width: 90px;
+  padding: 0 8px 0 0;
+  font-size: 11px;
+  font-weight: 500;
+  color: #888;
   display: flex;
   align-items: center;
-  background: var(--color-bg-alt);
-  border-right: 1px solid var(--color-border);
+  justify-content: flex-end;
+  text-align: right;
 }
 
 .chart-cells {
   display: flex;
-  flex: 1;
+  gap: 1px;
 }
 
-.chart-cell {
-  flex: 1;
-  min-width: 8px;
-  height: 18px;
-  border-right: 1px solid rgba(0,0,0,0.05);
+/* Data cells - perfect squares */
+.chart-cell--data {
+  width: 10px;
+  height: 10px;
+  min-width: 10px;
+  min-height: 10px;
+  flex-shrink: 0;
 }
 
-.chart-cell:last-child {
-  border-right: none;
+/* Red midnight divider */
+.chart-cell--midnight {
+  border-left: 2px solid #cc0000 !important;
+  margin-left: -1px;
 }
 
-.chart-cell--time {
+/* Date header row */
+.chart-row--dates {
+  margin-bottom: 2px;
+}
+
+.chart-row--dates .chart-label {
+  visibility: hidden;
+}
+
+.chart-row--dates .chart-cells {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: auto;
-  padding: 2px 0;
-  font-size: 0.625rem;
-  color: var(--color-text-muted);
-  background: var(--color-bg-alt);
-}
-
-.chart-cell--new-day {
-  border-left: 2px solid var(--color-border);
-}
-
-.time-top {
-  font-size: 0.5rem;
-  color: var(--color-text-light);
-  line-height: 1;
-}
-
-.time-bottom {
-  font-size: 0.625rem;
-  line-height: 1;
+  gap: 1px;
 }
 
 .chart-date-span {
+  text-align: center;
+  font-size: 10px;
+  color: #aaa;
+  white-space: nowrap;
+  overflow: hidden;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.chart-date-span--midnight {
+  border-left: 2px solid #cc0000;
+  margin-left: -1px;
+}
+
+/* Time header row */
+.chart-row--time {
+  margin-bottom: 2px;
+}
+
+.chart-row--time .chart-label {
+  visibility: hidden;
+}
+
+.chart-cell--time {
+  width: 10px;
+  min-width: 10px;
+  flex-shrink: 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: 0.7rem;
-  font-weight: 600;
-  color: var(--color-text-light);
-  padding: 0.25rem 0;
-  border-right: 2px solid var(--color-border);
+  justify-content: flex-end;
+  line-height: 1;
 }
 
-.chart-date-span:last-child {
-  border-right: none;
+.chart-cell--time .time-tens,
+.chart-cell--time .time-ones {
+  display: block;
+  font-size: 8px;
+  color: #777;
+  height: 9px;
+  line-height: 9px;
+  text-align: center;
 }
 
-/* Legend */
+/* Data row spacing */
+.chart-row:not(.chart-row--dates):not(.chart-row--time) {
+  margin-top: 1px;
+}
+
+/* Legend - Danko style */
 .chart-legend {
-  background: var(--color-card-bg);
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
+  background: #000;
+  border: 1px solid #333;
   padding: 1rem;
   margin-bottom: 1.5rem;
 }
@@ -223,63 +231,51 @@
 .chart-legend h3 {
   margin: 0 0 1rem 0;
   font-size: 1rem;
-  color: var(--color-text);
+  color: #ccc;
 }
 
-.legend-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
+.legend-section {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
 }
 
-.legend-row {
-  font-size: 0.75rem;
+.legend-section-title {
+  width: 100px;
+  min-width: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #aaa;
+  padding-top: 2px;
 }
 
-.legend-row strong {
-  display: block;
-  margin-bottom: 0.25rem;
-  color: var(--color-text);
-}
-
-.legend-scale {
+.legend-items {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem;
+  gap: 1px;
 }
 
-.legend-item {
-  display: flex;
+.legend-block {
+  display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
+  justify-content: center;
+  padding: 2px 4px;
+  font-size: 9px;
+  white-space: nowrap;
 }
 
-.legend-color {
-  width: 14px;
-  height: 14px;
-  border: 1px solid var(--color-border);
-  border-radius: 2px;
+.legend-text {
+  font-size: 9px;
 }
 
-.legend-label {
-  font-size: 0.625rem;
-  color: var(--color-text-muted);
+.legend-text.light {
+  color: #fff;
 }
 
-.legend-link {
-  margin: 1rem 0 0 0;
-  font-size: 0.875rem;
+.legend-text.dark {
+  color: #000;
 }
-
-.legend-link a {
-  color: var(--color-primary);
-  text-decoration: none;
-}
-
-.legend-link a:hover {
-  text-decoration: underline;
-}
-
 /* Links */
 .chart-links {
   margin-bottom: 1.5rem;
@@ -349,13 +345,27 @@
   }
   
   .chart-label {
-    width: 80px;
-    min-width: 80px;
-    font-size: 0.65rem;
+    width: 70px;
+    min-width: 70px;
+    font-size: 9px;
   }
   
-  .chart-cell {
-    min-width: 6px;
-    height: 14px;
+  .chart-cell--data {
+    width: 8px;
+    height: 8px;
+    min-width: 8px;
+    min-height: 8px;
+  }
+  
+  .chart-cell--time {
+    width: 8px;
+    min-width: 8px;
+  }
+  
+  .chart-cell--time .time-tens,
+  .chart-cell--time .time-ones {
+    font-size: 7px;
+    height: 8px;
+    line-height: 8px;
   }
 }
