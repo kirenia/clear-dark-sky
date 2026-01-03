@@ -131,20 +131,19 @@ function getColor(value, scale, type = 'range') {
   return scale[scale.length - 1].color;
 }
 
-function groupHoursByLocalDate(allHours) {
+function groupHoursByLocalDate(allHours, tzOffset) {
   const groups = [];
   let currentGroup = null;
   
   allHours.forEach((hour, i) => {
-    const utcDate = new Date(hour.time);
-    const localDate = new Date(utcDate.getTime());
-    if (hour.hour_local > utcDate.getUTCHours()) {
-      localDate.setUTCDate(localDate.getUTCDate() - 1);
-    } else if (hour.hour_local < utcDate.getUTCHours() - 12) {
-      localDate.setUTCDate(localDate.getUTCDate() + 1);
+    let timeStr = hour.time;
+    if (!timeStr.endsWith('Z') && !timeStr.includes('+')) {
+      timeStr += 'Z';
     }
-    
-    const dateKey = `${localDate.getUTCFullYear()}-${String(localDate.getUTCMonth() + 1).padStart(2, '0')}-${String(localDate.getUTCDate()).padStart(2, '0')}`;
+    const utcDate = new Date(timeStr);
+    const localMs = utcDate.getTime() + (tzOffset * 60 * 60 * 1000);
+    const localDate = new Date(localMs);
+    const dateKey = localDate.toISOString().split('T')[0];
     
     if (!currentGroup || currentGroup.dateKey !== dateKey) {
       currentGroup = {
@@ -206,18 +205,47 @@ function Forecast() {
   }
 
   const allHours = forecast.days.flatMap(day => day.hours);
-  const dayGroups = groupHoursByLocalDate(allHours);
+  const tzOffset = location.tz_offset ?? -7;
+  const dayGroups = groupHoursByLocalDate(allHours, tzOffset);
 
-  const rows = [
+  // Get local date for header
+  const now = new Date();
+  const localNow = new Date(now.getTime() + (tzOffset * 60 * 60 * 1000));
+  const localDateStr = localNow.toISOString().split('T')[0];
+
+  const skyRows = [
     { key: 'cloud_cover_pct', label: 'Cloud Cover', scale: COLORS.cloud, type: 'range' },
+    { key: 'ecmwf_cloud_pct', label: 'ECMWF Cloud', scale: COLORS.cloud, type: 'range' },
     { key: 'transparency', label: 'Transparency', scale: COLORS.transparency, type: 'value' },
     { key: 'seeing', label: 'Seeing', scale: COLORS.seeing, type: 'value' },
     { key: 'darkness', label: 'Darkness', scale: COLORS.darkness, type: 'range' },
+  ];
+
+  const groundRows = [
     { key: 'smoke_ugm3', label: 'Smoke', scale: COLORS.smoke, type: 'range' },
     { key: 'wind_speed_mph', label: 'Wind', scale: COLORS.wind, type: 'range' },
     { key: 'humidity_pct', label: 'Humidity', scale: COLORS.humidity, type: 'range' },
     { key: 'temperature_f', label: 'Temperature', scale: COLORS.temperature, type: 'range' }
   ];
+
+  const renderDataRow = (row) => (
+    <div key={row.key} className="chart-row">
+      <div className="chart-label">{row.label}:</div>
+      <div className="chart-cells">
+        {allHours.map((hour, i) => {
+          const isMidnight = hour.hour_local === 0 && i > 0;
+          return (
+            <div
+              key={i}
+              className={`chart-cell chart-cell--data ${isMidnight ? 'chart-cell--midnight' : ''}`}
+              style={{ backgroundColor: getColor(hour[row.key], row.scale, row.type) }}
+              title={`${row.label}: ${hour[row.key] ?? 'N/A'}`}
+            />
+          );
+        })}
+      </div>
+    </div>
+  );
 
   return (
     <div className="forecast">
@@ -242,17 +270,25 @@ function Forecast() {
 
       <div className="chart-container">
         <div className="chart-updated">
-          Forecast run: {forecast.forecast_run}
+          Last updated: {forecast.forecast_run}
         </div>
         
         <div className="forecast-chart">
+          {/* Chart info header with date and timezone */}
+          <div className="chart-row chart-row--info">
+            <div className="chart-label">
+              <div className="chart-date">{localDateStr}</div>
+              <div className="chart-timezone">Local Time</div>
+              <div className="chart-gmt">(GMT {tzOffset >= 0 ? '+' : ''}{tzOffset})</div>
+            </div>
+            <div className="chart-cells"></div>
+          </div>
 
           {/* Date header row */}
           <div className="chart-row chart-row--dates">
             <div className="chart-label"></div>
             <div className="chart-cells">
               {allHours.map((hour, i) => {
-                // Find which day group this hour belongs to
                 const group = dayGroups.find(g => i >= g.startIndex && i < g.startIndex + g.count);
                 const isFirstOfDay = group && i === group.startIndex;
                 const isMidnight = hour.hour_local === 0 && i > 0;
@@ -260,7 +296,6 @@ function Forecast() {
                 if (isFirstOfDay) {
                   const weekday = group.date.toLocaleDateString('en-US', { weekday: 'short', timeZone: 'UTC' });
                   const dayNum = group.date.getUTCDate();
-                  // Calculate width: cells are 10px + 1px gap each, minus last gap
                   const spanWidth = (group.count * 11) - 1;
                   return (
                     <div 
@@ -298,122 +333,119 @@ function Forecast() {
             </div>
           </div>
 
-          {/* Forecast rows */}
-          {rows.map(row => (
-            <div key={row.key} className="chart-row">
-              <div className="chart-label">{row.label}</div>
-              <div className="chart-cells">
-                {allHours.map((hour, i) => {
-                  const isMidnight = hour.hour_local === 0 && i > 0;
-                  return (
-                    <div
-                      key={i}
-                      className={`chart-cell chart-cell--data ${isMidnight ? 'chart-cell--midnight' : ''}`}
-                      style={{ backgroundColor: getColor(hour[row.key], row.scale, row.type) }}
-                      title={`${row.label}: ${hour[row.key] ?? 'N/A'}`}
-                    />
-                  );
-                })}
-              </div>
+          {/* Sky section */}
+          <div className="chart-section">
+            <div className="chart-section-label">Sky</div>
+            <div className="chart-section-rows">
+              {skyRows.map(renderDataRow)}
             </div>
-          ))}
+          </div>
+
+          {/* Ground section */}
+          <div className="chart-section">
+            <div className="chart-section-label">Ground</div>
+            <div className="chart-section-rows">
+              {groundRows.map(renderDataRow)}
+            </div>
+          </div>
         </div>
       </div>
 
       <div className="chart-legend">
-  <h3>Legend</h3>
-  
-  <div className="legend-section">
-    <div className="legend-section-title">Cloud Cover</div>
-    <div className="legend-items">
-      {COLORS.cloud.map((c, i) => (
-        <span key={i} className="legend-block" style={{ backgroundColor: c.color }}>
-          <span className={`legend-text ${i < 4 ? 'light' : 'dark'}`}>{c.label}</span>
-        </span>
-      ))}
-    </div>
-  </div>
+        <h3>Legend</h3>
+        
+        <div className="legend-section">
+          <div className="legend-section-title">Cloud Cover</div>
+          <div className="legend-items">
+            {COLORS.cloud.map((c, i) => (
+              <span key={i} className="legend-block" style={{ backgroundColor: c.color }}>
+                <span className={`legend-text ${i < 4 ? 'light' : 'dark'}`}>{c.label}</span>
+              </span>
+            ))}
+          </div>
+        </div>
 
-  <div className="legend-section">
-    <div className="legend-section-title">Transparency</div>
-    <div className="legend-items">
-      {COLORS.transparency.map((c, i) => (
-        <span key={i} className="legend-block" style={{ backgroundColor: c.color }}>
-          <span className={`legend-text ${i < 3 ? 'dark' : 'light'}`}>{c.label}</span>
-        </span>
-      ))}
-    </div>
-  </div>
+        <div className="legend-section">
+          <div className="legend-section-title">Transparency</div>
+          <div className="legend-items">
+            {COLORS.transparency.map((c, i) => (
+              <span key={i} className="legend-block" style={{ backgroundColor: c.color }}>
+                <span className={`legend-text ${i < 3 ? 'dark' : 'light'}`}>{c.label}</span>
+              </span>
+            ))}
+          </div>
+        </div>
 
-  <div className="legend-section">
-    <div className="legend-section-title">Seeing</div>
-    <div className="legend-items">
-      {COLORS.seeing.map((c, i) => (
-        <span key={i} className="legend-block" style={{ backgroundColor: c.color }}>
-          <span className={`legend-text ${i < 3 ? 'dark' : 'light'}`}>{c.label}</span>
-        </span>
-      ))}
-    </div>
-  </div>
+        <div className="legend-section">
+          <div className="legend-section-title">Seeing</div>
+          <div className="legend-items">
+            {COLORS.seeing.map((c, i) => (
+              <span key={i} className="legend-block" style={{ backgroundColor: c.color }}>
+                <span className={`legend-text ${i < 3 ? 'dark' : 'light'}`}>{c.label}</span>
+              </span>
+            ))}
+          </div>
+        </div>
 
-  <div className="legend-section">
-    <div className="legend-section-title">Darkness</div>
-    <div className="legend-items">
-      {COLORS.darkness.filter((_, i) => i % 2 === 0).map((c, i) => (
-        <span key={i} className="legend-block" style={{ backgroundColor: c.color }}>
-          <span className={`legend-text ${c.max < 3 ? 'dark' : 'light'}`}>{c.label}</span>
-        </span>
-      ))}
-    </div>
-  </div>
+        <div className="legend-section">
+          <div className="legend-section-title">Darkness</div>
+          <div className="legend-items">
+            {COLORS.darkness.filter((_, i) => i % 2 === 0).map((c, i) => (
+              <span key={i} className="legend-block" style={{ backgroundColor: c.color }}>
+                <span className={`legend-text ${c.max < 3 ? 'dark' : 'light'}`}>{c.label}</span>
+              </span>
+            ))}
+          </div>
+        </div>
 
-  <div className="legend-section">
-    <div className="legend-section-title">Smoke</div>
-    <div className="legend-items">
-      {COLORS.smoke.map((c, i) => (
-        <span key={i} className="legend-block" style={{ backgroundColor: c.color }}>
-          <span className={`legend-text ${i < 4 ? 'light' : i < 7 ? 'dark' : 'light'}`}>{c.label}</span>
-        </span>
-      ))}
-    </div>
-  </div>
+        <div className="legend-section">
+          <div className="legend-section-title">Smoke</div>
+          <div className="legend-items">
+            {COLORS.smoke.map((c, i) => (
+              <span key={i} className="legend-block" style={{ backgroundColor: c.color }}>
+                <span className={`legend-text ${i < 4 ? 'light' : i < 7 ? 'dark' : 'light'}`}>{c.label}</span>
+              </span>
+            ))}
+          </div>
+        </div>
 
-  <div className="legend-section">
-    <div className="legend-section-title">Wind</div>
-    <div className="legend-items">
-      {COLORS.wind.map((c, i) => (
-        <span key={i} className="legend-block" style={{ backgroundColor: c.color }}>
-          <span className={`legend-text ${i < 3 ? 'light' : 'dark'}`}>{c.label}</span>
-        </span>
-      ))}
-    </div>
-  </div>
+        <div className="legend-section">
+          <div className="legend-section-title">Wind</div>
+          <div className="legend-items">
+            {COLORS.wind.map((c, i) => (
+              <span key={i} className="legend-block" style={{ backgroundColor: c.color }}>
+                <span className={`legend-text ${i < 3 ? 'light' : 'dark'}`}>{c.label}</span>
+              </span>
+            ))}
+          </div>
+        </div>
 
-  <div className="legend-section">
-    <div className="legend-section-title">Humidity</div>
-    <div className="legend-items">
-      {COLORS.humidity.map((c, i) => (
-        <span key={i} className="legend-block" style={{ backgroundColor: c.color }}>
-          <span className={`legend-text ${i < 3 ? 'light' : 'dark'}`}>{c.label}</span>
-        </span>
-      ))}
-    </div>
-  </div>
+        <div className="legend-section">
+          <div className="legend-section-title">Humidity</div>
+          <div className="legend-items">
+            {COLORS.humidity.map((c, i) => (
+              <span key={i} className="legend-block" style={{ backgroundColor: c.color }}>
+                <span className={`legend-text ${i < 3 ? 'light' : 'dark'}`}>{c.label}</span>
+              </span>
+            ))}
+          </div>
+        </div>
 
-  <div className="legend-section">
-    <div className="legend-section-title">Temperature</div>
-    <div className="legend-items">
-      {COLORS.temperature.map((c, i) => (
-        <span key={i} className="legend-block" style={{ backgroundColor: c.color }}>
-          <span className={`legend-text ${i < 6 || i > 14 ? 'light' : 'dark'}`}>{c.label}</span>
-        </span>
-      ))}
-    </div>
-  </div>
-</div>
-<p className="legend-link">
-  <Link to="/docs">Full guide to reading charts →</Link>
-</p>
+        <div className="legend-section">
+          <div className="legend-section-title">Temperature</div>
+          <div className="legend-items">
+            {COLORS.temperature.map((c, i) => (
+              <span key={i} className="legend-block" style={{ backgroundColor: c.color }}>
+                <span className={`legend-text ${i < 6 || i > 14 ? 'light' : 'dark'}`}>{c.label}</span>
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <p className="legend-link">
+          <Link to="/docs">Full guide to reading charts →</Link>
+        </p>
+      </div>
 
       <div className="chart-links">
         <h3>Useful Links</h3>

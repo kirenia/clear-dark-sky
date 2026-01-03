@@ -247,8 +247,9 @@ class ForecastBuilder:
                 except:
                     dt = start_time + timedelta(hours=i)
                     
-                    if dt < start_time:
-                        continue
+                # Skip past hours
+                if dt < start_time:
+                    continue
                 
                 forecast_hour = i + 1
                 

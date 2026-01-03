@@ -49,7 +49,7 @@ class ForecastLocation:
         self.latitude = db_loc.latitude
         self.longitude = db_loc.longitude
         self.elevation = db_loc.elevation
-        self.timezone_offset = get_timezone_offset(db_loc.timezone)
+        self.tz_offset = get_timezone_offset(db_loc.timezone)
         self.created_at = db_loc.created_at
 
 
@@ -107,7 +107,7 @@ async def get_forecast_by_coords(
             self.latitude = lat
             self.longitude = lon
             self.elevation = None
-            self.timezone_offset = get_timezone_offset(tz)
+            self.tz_offset = get_timezone_offset(tz)
             self.created_at = datetime.utcnow()
     
     location = TempLocation()

@@ -325,6 +325,62 @@
   text-decoration: underline;
 }
 
+/* Chart info header */
+.chart-row--info .chart-label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding-right: 8px;
+}
+
+.chart-date {
+  font-size: 11px;
+  color: #aaa;
+  font-family: monospace;
+}
+
+.chart-timezone {
+  font-size: 10px;
+  color: #888;
+}
+
+.chart-gmt {
+  font-size: 9px;
+  color: #666;
+}
+
+/* Chart sections */
+.chart-section {
+  display: flex;
+  margin-top: 4px;
+}
+
+.chart-section-label {
+  display: block;
+  font-size: 0.4em;
+  text-transform: uppercase;
+  font-weight: normal;
+  padding: 0 0 0 2px;
+  color: var(--text-color);
+  writing-mode: vertical-rl;
+  text-align: center;
+  letter-spacing: 1px;
+  height: 60px;
+}
+
+.chart-section-rows {
+  flex: 1;
+}
+
+.chart-section .chart-row {
+  margin-top: 1px;
+}
+
+.chart-section .chart-label {
+  width: 100px;
+  min-width: 100px;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .forecast {
